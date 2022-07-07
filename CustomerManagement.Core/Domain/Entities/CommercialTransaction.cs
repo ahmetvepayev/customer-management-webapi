@@ -1,6 +1,8 @@
+using CustomerManagement.Core.Domain.Interfaces;
+
 namespace CustomerManagement.Core.Domain.Entities;
 
-public class Transaction
+public class CommercialTransaction : IEntity
 {
     public int Id { get; set; }
     public int CustomerId { get; set; }

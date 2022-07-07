@@ -1,6 +1,8 @@
+using CustomerManagement.Core.Domain.Interfaces;
+
 namespace CustomerManagement.Core.Domain.Entities;
 
-public class Customer
+public class Customer : IEntity
 {
     public int Id { get; set; }
     public string Firstname { get; set; }
@@ -10,5 +12,5 @@ public class Customer
     public string City { get; set; }
     public byte[] Photo { get; set; }
 
-    public Transaction Transaction { get; set; }
+    public List<CommercialTransaction> CommercialTransactions { get; set; } = new();
 }
