@@ -9,18 +9,13 @@ public class StatusResponse
     
     public List<string> Errors { get; set; }
 
-    public StatusResponse()
+    public StatusResponse(IEnumerable<string> errors = null)
     {
-        Errors = new List<string>();
+        Errors = (errors == null) ? new List<string>() : new List<string>(errors);
     }
 
-    public StatusResponse(int statusCode) : this()
+    public StatusResponse(int statusCode, IEnumerable<string> errors = null) : this(errors)
     {
         StatusCode = statusCode;
-    }
-
-    public StatusResponse(int statusCode, IEnumerable<string> errors) : this(statusCode)
-    {
-        Errors = new List<string>(errors);
     }
 }

@@ -4,22 +4,22 @@ public class ObjectResponse<T> : StatusResponse
 {
     public T Data { get; set; }
 
-    public ObjectResponse() : base()
+    public ObjectResponse(IEnumerable<string> errors = null) : base(errors)
     {
         
     }
 
-    public ObjectResponse(int statusCode) : base(statusCode)
+    public ObjectResponse(T data) : base()
+    {
+        Data = data;
+    }
+
+    public ObjectResponse(int statusCode, IEnumerable<string> errors = null) : base(statusCode, errors)
     {
         
     }
 
-    public ObjectResponse(int statusCode, IEnumerable<string> errors) : base(statusCode, errors)
-    {
-        
-    }
-
-    public ObjectResponse(int statusCode, T data) : base()
+    public ObjectResponse(T data, int statusCode, IEnumerable<string> errors = null) : base(statusCode, errors)
     {
         Data = data;
     }
