@@ -1,6 +1,9 @@
-namespace CustomerManagement.Core.Application.Dtos.EntityDtos.Customer;
+using CustomerManagement.Core.Application.Interfaces;
+using CustomerManagement.Core.Domain.Entities;
 
-public class CustomerGetResponse
+namespace CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
+
+public class CustomerGetResponse : IResponseDto<Customer>
 {
     public int Id { get; set; }
     public string Firstname { get; set; }

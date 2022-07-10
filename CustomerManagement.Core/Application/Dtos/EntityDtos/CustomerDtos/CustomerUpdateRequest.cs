@@ -1,6 +1,9 @@
-namespace CustomerManagement.Core.Application.Dtos.EntityDtos.Customer;
+using CustomerManagement.Core.Application.Interfaces;
+using CustomerManagement.Core.Domain.Entities;
 
-public class CustomerAddRequest
+namespace CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
+
+public class CustomerUpdateRequest : IRequestDto<Customer>
 {
     public string Firstname { get; set; }
     public string LastName { get; set; }
