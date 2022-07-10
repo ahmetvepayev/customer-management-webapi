@@ -4,7 +4,7 @@ namespace CustomerManagement.Core.Application.Services;
 
 public class PersistingServiceBase
 {
-    private readonly IUnitOfWork _unitOfWork;
+    protected readonly IUnitOfWork _unitOfWork;
 
     public PersistingServiceBase(IUnitOfWork unitOfWork)
     {

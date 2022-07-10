@@ -3,7 +3,7 @@ using CustomerManagement.Core.Domain.Entities;
 
 namespace CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
 
-public class CustomerUpdateRequest : IRequestDto<Customer>
+public class CustomerUpdateRequest
 {
     public string Firstname { get; set; }
     public string LastName { get; set; }

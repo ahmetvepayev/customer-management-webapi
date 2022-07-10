@@ -1,8 +1,14 @@
+using CustomerManagement.Core.Application.Dtos.ApiModelWrappers;
+using CustomerManagement.Core.Application.Dtos.EntityDtos.CommercialTransactionDtos;
 using CustomerManagement.Core.Domain.Entities;
 
 namespace CustomerManagement.Core.Application.Interfaces.EntityServices;
 
-public interface ICommercialTransactionService : IEntityService<CommercialTransaction>
+public interface ICommercialTransactionService
 {
-
+    ObjectResponse<List<CommercialTransactionGetResponse>> GetAll();
+    ObjectResponse<CommercialTransactionGetResponse> GetById(int id);
+    StatusResponse Add(CommercialTransactionAddRequest request);
+    StatusResponse Update(int id, CommercialTransactionUpdateRequest request);
+    StatusResponse Delete(int id);
 }

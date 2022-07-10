@@ -21,13 +21,12 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Customer>().Property(e => e.Email).HasMaxLength(CustomerRules.EmailMaxLength);
         modelBuilder.Entity<Customer>().Property(e => e.Phone).HasMaxLength(CustomerRules.PhoneMaxLength);
         modelBuilder.Entity<Customer>().Property(e => e.City).HasMaxLength(CustomerRules.CityMaxLength);
-        
+
         modelBuilder.Entity<Customer>().HasIndex(e => e.Phone).IsUnique();
 
         modelBuilder.Entity<CommercialTransaction>().Property(e => e.Description)
             .HasMaxLength(CommercialTransactionRules.DescriptionMaxLength);
         modelBuilder.Entity<CommercialTransaction>().Property(e => e.Amount)
-            .HasMaxLength(CommercialTransactionRules.AmountMaxLength)
-            .HasPrecision(CommercialTransactionRules.AmountPrecision);
+            .HasPrecision(CommercialTransactionRules.AmountMaxLength, CommercialTransactionRules.AmountPrecision);
     }
 }

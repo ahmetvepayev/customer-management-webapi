@@ -3,7 +3,7 @@ using CustomerManagement.Core.Domain.Entities;
 
 namespace CustomerManagement.Core.Application.Dtos.EntityDtos.CommercialTransactionDtos;
 
-public class CommercialTransactionGetResponse : IResponseDto<CommercialTransaction>
+public class CommercialTransactionGetResponse
 {
     public int Id { get; set; }
     public int CustomerId { get; set; }

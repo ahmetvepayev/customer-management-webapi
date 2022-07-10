@@ -8,6 +8,7 @@ public class CommercialTransactionProfile : Profile
 {
     public CommercialTransactionProfile()
     {
-        CreateMap<CommercialTransaction, CommercialTransactionGetResponse>().ReverseMap();
+        CreateMap<CommercialTransaction, CommercialTransactionGetResponse>();
+        CreateMap<CommercialTransactionAddRequest, CommercialTransaction>();
     }
 }
