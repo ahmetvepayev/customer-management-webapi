@@ -1,6 +1,7 @@
 using AutoMapper;
 using CustomerManagement.Core.Application.Dtos.ApiModelWrappers;
 using CustomerManagement.Core.Application.Dtos.EntityDtos.CommercialTransactionDtos;
+using CustomerManagement.Core.Application.DtoValidators;
 using CustomerManagement.Core.Application.Interfaces.EntityServices;
 using CustomerManagement.Core.Domain.Entities;
 using CustomerManagement.Core.Domain.Interfaces;
@@ -12,12 +13,14 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
 {
     private readonly IMapper _mapper;
     private readonly ICommercialTransactionRepository _commercialTransactionRepository;
+    private readonly ICustomerRepository _customerRepository;
 
-    public CommercialTransactionService(IUnitOfWork unitOfWork, ICommercialTransactionRepository commercialTransactionRepository, IMapper mapper)
+    public CommercialTransactionService(IUnitOfWork unitOfWork, ICommercialTransactionRepository commercialTransactionRepository, IMapper mapper, ICustomerRepository customerRepository)
         : base(unitOfWork)
     {
         _commercialTransactionRepository = commercialTransactionRepository;
         _mapper = mapper;
+        _customerRepository = customerRepository;
     }
 
     public ObjectResponse<List<CommercialTransactionGetResponse>> GetAll()
@@ -28,10 +31,7 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
         if (rawData == null || !rawData.Any())
         {
             code = 404;
-            var errors = new List<string>(){
-                "No available data"
-            };
-            return new ObjectResponse<List<CommercialTransactionGetResponse>>(code, errors);
+            return new ObjectResponse<List<CommercialTransactionGetResponse>>(code);
         }
 
         code = 200;
@@ -48,10 +48,7 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
         if (rawData == null)
         {
             code = 404;
-            var errors = new List<string>(){
-                "No available data"
-            };
-            return new ObjectResponse<CommercialTransactionGetResponse>(code, errors);
+            return new ObjectResponse<CommercialTransactionGetResponse>(code);
         }
 
         code = 200;
@@ -63,23 +60,87 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
     public StatusResponse Add(CommercialTransactionAddRequest request)
     {
         int code;
-        var addRequest = (CommercialTransactionAddRequest)request;
-        var addedEntry = _mapper.Map<CommercialTransaction>(addRequest);
+        
+        var customer = _customerRepository.GetById(request.CustomerId);
+        if (!request.IsValid(customer, out List<string> errors))
+        {
+            code = 400;
+            return new StatusResponse(code, errors);
+        }
+
+        var addedEntry = _mapper.Map<CommercialTransaction>(request);
         _commercialTransactionRepository.Add(addedEntry);
 
-        _unitOfWork.SaveChanges();
-        code = 200;
+        if (_unitOfWork.SaveChanges() == 0)
+        {
+            code = 500;
+            errors = new(){
+                "The database responded with an error"
+            };
+            return new StatusResponse(code, errors);
+        }
 
+        code = 200;
         return new StatusResponse(code);
     }
 
     public StatusResponse Update(int id, CommercialTransactionUpdateRequest request)
     {
-        throw new NotImplementedException();
+        int code;
+
+        var customer = _customerRepository.GetById(request.CustomerId);
+        if (!request.IsValid(customer, out List<string> errors))
+        {
+            code = 400;
+            return new StatusResponse(code, errors);
+        }
+
+        var updatedEntry = _commercialTransactionRepository.GetById(id);
+
+        if (updatedEntry == null)
+        {
+            code = 404;
+            return new StatusResponse(code);
+        }
+
+        updatedEntry = _mapper.Map<CommercialTransaction>(request);
+
+        if (_unitOfWork.SaveChanges() == 0)
+        {
+            code = 500;
+            errors = new(){
+                "The database responded with an error"
+            };
+            return new StatusResponse(code, errors);
+        }
+
+        code = 200;
+        return new StatusResponse(code);
     }
 
     public StatusResponse Delete(int id)
     {
-        throw new NotImplementedException();
+        int code;
+        var deletedEntry = _commercialTransactionRepository.GetById(id);
+
+        if (deletedEntry == null)
+        {
+            code = 404;
+            return new StatusResponse(code);
+        }
+
+        _commercialTransactionRepository.Delete(deletedEntry);
+
+        if (_unitOfWork.SaveChanges() == 0)
+        {
+            code = 500;
+            List<string> errors = new(){
+                "The database responded with an error"
+            };
+            return new StatusResponse(code, errors);
+        }
+
+        code = 200;
+        return new StatusResponse(code);
     }
 }

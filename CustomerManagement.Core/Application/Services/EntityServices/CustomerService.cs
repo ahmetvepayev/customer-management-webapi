@@ -1,6 +1,7 @@
 using AutoMapper;
 using CustomerManagement.Core.Application.Dtos.ApiModelWrappers;
 using CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
+using CustomerManagement.Core.Application.DtoValidators;
 using CustomerManagement.Core.Application.Interfaces.EntityServices;
 using CustomerManagement.Core.Domain.Entities;
 using CustomerManagement.Core.Domain.Interfaces;
@@ -29,10 +30,7 @@ public class CustomerService : PersistingServiceBase, ICustomerService
         if (rawData == null || !rawData.Any())
         {
             code = 404;
-            var errors = new List<string>(){
-                "No available data"
-            };
-            return new ObjectResponse<List<CustomerGetResponse>>(code, errors);
+            return new ObjectResponse<List<CustomerGetResponse>>(code);
         }
 
         code = 200;
@@ -43,29 +41,103 @@ public class CustomerService : PersistingServiceBase, ICustomerService
 
     public ObjectResponse<CustomerGetResponse> GetById(int id)
     {
-        throw new NotImplementedException();
+        int code;
+        var rawData = _customerRepository.GetById(id);
+
+        if (rawData == null)
+        {
+            code = 404;
+            return new ObjectResponse<CustomerGetResponse>(code);
+        }
+
+        code = 200;
+        var data = _mapper.Map<CustomerGetResponse>(rawData);
+        var response = new ObjectResponse<CustomerGetResponse>(data, code);
+        return response;
     }
 
     public StatusResponse Add(CustomerAddRequest request)
     {
         int code;
-        var addRequest = (CustomerAddRequest)request;
-        var addedEntry = _mapper.Map<Customer>(addRequest);
+
+        if (!request.IsValid(out List<string> errors))
+        {
+            code = 400;
+            return new StatusResponse(code, errors);
+        }
+
+        var addedEntry = _mapper.Map<Customer>(request);
         _customerRepository.Add(addedEntry);
 
-        _unitOfWork.SaveChanges();
-        code = 200;
+        if (_unitOfWork.SaveChanges() == 0)
+        {
+            code = 500;
+            errors = new(){
+                "The database responded with an error"
+            };
+            return new StatusResponse(code, errors);
+        }
 
+        code = 200;
         return new StatusResponse(code);
     }
 
     public StatusResponse Update(int id, CustomerUpdateRequest request)
     {
-        throw new NotImplementedException();
+        int code;
+
+        if (!request.IsValid(out List<string> errors))
+        {
+            code = 400;
+            return new StatusResponse(code, errors);
+        }
+
+        var updatedEntry = _customerRepository.GetById(id);
+
+        if (updatedEntry == null)
+        {
+            code = 404;
+            return new StatusResponse(code);
+        }
+
+        updatedEntry = _mapper.Map<Customer>(request);
+
+        if (_unitOfWork.SaveChanges() == 0)
+        {
+            code = 500;
+            errors = new(){
+                "The database responded with an error"
+            };
+            return new StatusResponse(code, errors);
+        }
+
+        code = 200;
+        return new StatusResponse(code);
     }
 
     public StatusResponse Delete(int id)
     {
-        throw new NotImplementedException();
+        int code;
+        var deletedEntry = _customerRepository.GetById(id);
+
+        if (deletedEntry == null)
+        {
+            code = 404;
+            return new StatusResponse(code);
+        }
+
+        _customerRepository.Delete(deletedEntry);
+
+        if (_unitOfWork.SaveChanges() == 0)
+        {
+            code = 500;
+            List<string> errors = new(){
+                "The database responded with an error"
+            };
+            return new StatusResponse(code, errors);
+        }
+
+        code = 200;
+        return new StatusResponse(code);
     }
 }

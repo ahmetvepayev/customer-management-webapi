@@ -19,6 +19,12 @@ public class CommercialTransactionController : ControllerBase
     public IActionResult GetAll()
     {
         var response = _commercialTransactionService.GetAll();
+
+        if (response.Data == null && (response.Errors == null || !response.Errors.Any()))
+        {
+            return new StatusCodeResult(response.StatusCode);
+        }
+
         return new ObjectResult(response){StatusCode = response.StatusCode};
     }
 
@@ -26,6 +32,12 @@ public class CommercialTransactionController : ControllerBase
     public IActionResult GetById(int id)
     {
         var response = _commercialTransactionService.GetById(id);
+
+        if (response.Data == null && (response.Errors == null || !response.Errors.Any()))
+        {
+            return new StatusCodeResult(response.StatusCode);
+        }
+
         return new ObjectResult(response){StatusCode =  response.StatusCode};
     }
 
@@ -33,6 +45,30 @@ public class CommercialTransactionController : ControllerBase
     public IActionResult Add(CommercialTransactionAddRequest request)
     {
         var response = _commercialTransactionService.Add(request);
+        if (response.Errors == null || !response.Errors.Any())
+        {
+            return new StatusCodeResult(response.StatusCode);
+        }
+
+        return new ObjectResult(response){StatusCode = response.StatusCode};
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, CommercialTransactionUpdateRequest request)
+    {
+        var response = _commercialTransactionService.Update(id, request);
+        if (response.Errors == null || !response.Errors.Any())
+        {
+            return new StatusCodeResult(response.StatusCode);
+        }
+
+        return new ObjectResult(response){StatusCode = response.StatusCode};
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var response = _commercialTransactionService.Delete(id);
         if (response.Errors == null || !response.Errors.Any())
         {
             return new StatusCodeResult(response.StatusCode);

@@ -10,5 +10,6 @@ public class CommercialTransactionProfile : Profile
     {
         CreateMap<CommercialTransaction, CommercialTransactionGetResponse>();
         CreateMap<CommercialTransactionAddRequest, CommercialTransaction>();
+        CreateMap<CommercialTransactionUpdateRequest, CommercialTransaction>();
     }
 }

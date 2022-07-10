@@ -4,5 +4,5 @@ namespace CustomerManagement.Core.Domain.Interfaces.Repositories;
 
 public interface ICommercialTransactionRepository : IEntityRepository<CommercialTransaction>
 {
-
+    
 }
