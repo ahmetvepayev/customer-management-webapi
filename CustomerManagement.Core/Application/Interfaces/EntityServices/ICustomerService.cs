@@ -1,6 +1,5 @@
 using CustomerManagement.Core.Application.Dtos.ApiModelWrappers;
 using CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
-using CustomerManagement.Core.Domain.Entities;
 
 namespace CustomerManagement.Core.Application.Interfaces.EntityServices;
 
