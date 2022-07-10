@@ -4,7 +4,7 @@ public class ObjectResponse<T> : StatusResponse
 {
     public T Data { get; set; }
 
-    public ObjectResponse(IEnumerable<string> errors = null) : base(errors)
+    public ObjectResponse(List<string> errors = null) : base(errors)
     {
         
     }
@@ -14,12 +14,12 @@ public class ObjectResponse<T> : StatusResponse
         Data = data;
     }
 
-    public ObjectResponse(int statusCode, IEnumerable<string> errors = null) : base(statusCode, errors)
+    public ObjectResponse(int statusCode, List<string> errors = null) : base(statusCode, errors)
     {
         
     }
 
-    public ObjectResponse(T data, int statusCode, IEnumerable<string> errors = null) : base(statusCode, errors)
+    public ObjectResponse(T data, int statusCode, List<string> errors = null) : base(statusCode, errors)
     {
         Data = data;
     }

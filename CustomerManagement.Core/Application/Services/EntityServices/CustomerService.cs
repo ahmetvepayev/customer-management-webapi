@@ -29,7 +29,7 @@ public class CustomerService : PersistingServiceBase, ICustomerService
         if (rawData == null || !rawData.Any())
         {
             code = 404;
-            var errors = new[]{
+            var errors = new List<string>(){
                 "No available data"
             };
             return new ObjectResponse<List<CustomerGetResponse>>(code, errors);

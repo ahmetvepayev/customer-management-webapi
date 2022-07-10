@@ -28,7 +28,7 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
         if (rawData == null || !rawData.Any())
         {
             code = 404;
-            var errors = new[]{
+            var errors = new List<string>(){
                 "No available data"
             };
             return new ObjectResponse<List<CommercialTransactionGetResponse>>(code, errors);
@@ -48,7 +48,7 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
         if (rawData == null)
         {
             code = 404;
-            var errors = new[]{
+            var errors = new List<string>(){
                 "No available data"
             };
             return new ObjectResponse<CommercialTransactionGetResponse>(code, errors);

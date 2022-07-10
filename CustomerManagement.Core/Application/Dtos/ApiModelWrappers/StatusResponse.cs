@@ -9,12 +9,12 @@ public class StatusResponse
     
     public List<string> Errors { get; set; }
 
-    public StatusResponse(IEnumerable<string> errors = null)
+    public StatusResponse(List<string> errors = null)
     {
-        Errors = (errors == null) ? new List<string>() : new List<string>(errors);
+        Errors = errors ?? new();
     }
 
-    public StatusResponse(int statusCode, IEnumerable<string> errors = null) : this(errors)
+    public StatusResponse(int statusCode, List<string> errors = null) : this(errors)
     {
         StatusCode = statusCode;
     }
