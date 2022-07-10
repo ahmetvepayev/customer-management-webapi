@@ -20,8 +20,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Customer>().Property(e => e.LastName).HasMaxLength(CustomerRules.LastNameMaxLength);
         modelBuilder.Entity<Customer>().Property(e => e.Email).HasMaxLength(CustomerRules.EmailMaxLength);
         modelBuilder.Entity<Customer>().Property(e => e.Phone).HasMaxLength(CustomerRules.PhoneMaxLength);
-        modelBuilder.Entity<Customer>().HasIndex(e => e.Phone).IsUnique();
         modelBuilder.Entity<Customer>().Property(e => e.City).HasMaxLength(CustomerRules.CityMaxLength);
+        
+        modelBuilder.Entity<Customer>().HasIndex(e => e.Phone).IsUnique();
 
         modelBuilder.Entity<CommercialTransaction>().Property(e => e.Description)
             .HasMaxLength(CommercialTransactionRules.DescriptionMaxLength);

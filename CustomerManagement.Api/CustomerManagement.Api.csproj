@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CustomerManagement.Infrastructure\CustomerManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\CustomerManagement.Core\Application\CustomerManagement.Core.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ namespace CustomerManagement.Core.Application.Interfaces;
 public interface IEntityService<TEntity>
     where TEntity : class, IEntity
 {
-    ObjectResponse<List<IResponseDto<TEntity>>> GetAll();
+    ObjectResponse<IEnumerable<IResponseDto<TEntity>>> GetAll();
     ObjectResponse<IResponseDto<TEntity>> GetById(int id);
     StatusResponse Add(IRequestDto<TEntity> request);
     StatusResponse Update(int id, IRequestDto<TEntity> request);
