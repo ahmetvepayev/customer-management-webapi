@@ -67,10 +67,30 @@ public class CustomerService : PersistingServiceBase, ICustomerService
             return new StatusResponse(code, errors);
         }
 
+        if (_customerRepository.Exists(e => e.Phone == request.Phone))
+        {
+            code = 400;
+            errors = new(){
+                "Phones are required to be unique. There is already a Customer with the given Phone"
+            };
+            return new StatusResponse(code, errors);
+        }
+
         var addedEntry = _mapper.Map<Customer>(request);
         _customerRepository.Add(addedEntry);
 
-        if (_unitOfWork.SaveChanges() == 0)
+        try
+        {
+            if (_unitOfWork.SaveChanges() == 0)
+            {
+                code = 400;
+                errors = new(){
+                    "Changes to the database did not persist"
+                };
+                return new StatusResponse(code, errors);
+            }
+        }
+        catch
         {
             code = 500;
             errors = new(){
@@ -78,6 +98,7 @@ public class CustomerService : PersistingServiceBase, ICustomerService
             };
             return new StatusResponse(code, errors);
         }
+        
 
         code = 200;
         return new StatusResponse(code);
@@ -102,9 +123,30 @@ public class CustomerService : PersistingServiceBase, ICustomerService
             return new StatusResponse(code);
         }
 
+        // ensure that the updated phone is unique
+        if (_customerRepository.Exists(c => c.Phone == request.Phone && c.Id != id))
+        {
+            code = 400;
+            errors = new(){
+                "Phones are required to be unique. There is already another Customer with the given Phone"
+            };
+            return new StatusResponse(code, errors);
+        }
+
         updatedEntry = _mapper.Map<Customer>(request);
 
-        if (_unitOfWork.SaveChanges() == 0)
+        try
+        {
+            if (_unitOfWork.SaveChanges() == 0)
+            {
+                code = 400;
+                errors = new(){
+                    "Changes to the database did not persist"
+                };
+                return new StatusResponse(code, errors);
+            }
+        }
+        catch
         {
             code = 500;
             errors = new(){

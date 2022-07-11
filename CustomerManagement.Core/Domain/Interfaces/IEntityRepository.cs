@@ -11,4 +11,5 @@ public interface IEntityRepository<TEntity>
     void Delete(TEntity entity);
     List<TEntity> FindAll(Expression<Func<TEntity, bool>> condition);
     bool Exists(int id);
+    bool Exists(Expression<Func<TEntity, bool>> condition);
 }

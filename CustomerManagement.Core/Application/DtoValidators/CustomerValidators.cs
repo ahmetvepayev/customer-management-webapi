@@ -1,5 +1,6 @@
 using CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
 using CustomerManagement.Core.Domain.EntityRules;
+using CustomerManagement.Utility.Extensions;
 
 namespace CustomerManagement.Core.Application.DtoValidators;
 
@@ -40,9 +41,13 @@ public static class CustomerValidators
         {
             errors.Add("Phone is required");
         }
-        else if (request.Phone.Length > CustomerRules.PhoneMaxLength)
+        else
         {
-            errors.Add($"Phone too large. Phone max length: {CustomerRules.PhoneMaxLength}");
+            request.Phone = request.Phone.GetOnlyDigits();
+            if (request.Phone.Length > CustomerRules.PhoneMaxLength)
+            {
+                errors.Add($"Phone too large. Phone max length: {CustomerRules.PhoneMaxLength}");
+            }
         }
 
         if (String.IsNullOrEmpty(request.City))
@@ -97,9 +102,13 @@ public static class CustomerValidators
         {
             errors.Add("Phone is required");
         }
-        else if (request.Phone.Length > CustomerRules.PhoneMaxLength)
+        else
         {
-            errors.Add($"Phone too large. Phone max length: {CustomerRules.PhoneMaxLength}");
+            request.Phone = request.Phone.GetOnlyDigits();
+            if (request.Phone.Length > CustomerRules.PhoneMaxLength)
+            {
+                errors.Add($"Phone too large. Phone max length: {CustomerRules.PhoneMaxLength}");
+            }
         }
 
         if (String.IsNullOrEmpty(request.City))

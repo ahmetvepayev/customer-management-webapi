@@ -1,4 +1,3 @@
-using System.Text;
 using AutoMapper;
 using CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
 using CustomerManagement.Core.Domain.Entities;
@@ -13,20 +12,10 @@ public class CustomerProfile : Profile
         CreateMap<Customer, CustomerGetResponse>();
         CreateMap<CustomerAddRequest, Customer>()
             .ForMember(
-                dest => dest.Phone,
-                // extracts only digits from a given phone no
-                opt => opt.MapFrom(src => src.Phone.GetOnlyDigits())
-            )
-            .ForMember(
                 dest => dest.Photo,
                 opt => opt.MapFrom(src => src.Photo.ToByteArray())
             );
         CreateMap<CustomerUpdateRequest, Customer>()
-            .ForMember(
-                dest => dest.Phone,
-                // extracts only digits from a given phone no
-                opt => opt.MapFrom(src => src.Phone.GetOnlyDigits())
-            )
             .ForMember(
                 dest => dest.Photo,
                 opt => opt.MapFrom(src => src.Photo.ToByteArray())

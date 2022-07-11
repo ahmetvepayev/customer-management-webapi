@@ -43,4 +43,9 @@ public class GenericEntityRepository<TEntity> : IEntityRepository<TEntity>
     {
         return _context.Set<TEntity>().Any(e => e.Id == id);
     }
+
+    public bool Exists(Expression<Func<TEntity, bool>> condition)
+    {
+        return _context.Set<TEntity>().Any(condition);
+    }
 }
