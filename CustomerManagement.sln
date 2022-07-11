@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagement.Core.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagement.Core.Application", "CustomerManagement.Core\Application\CustomerManagement.Core.Application.csproj", "{18131BC1-63B4-4CA0-B422-268D12D2718B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagement.Utility", "CustomerManagement.Utility\CustomerManagement.Utility.csproj", "{F955B631-9D06-4551-A3D8-30A897A71A13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{18131BC1-63B4-4CA0-B422-268D12D2718B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18131BC1-63B4-4CA0-B422-268D12D2718B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18131BC1-63B4-4CA0-B422-268D12D2718B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F955B631-9D06-4551-A3D8-30A897A71A13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F955B631-9D06-4551-A3D8-30A897A71A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F955B631-9D06-4551-A3D8-30A897A71A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F955B631-9D06-4551-A3D8-30A897A71A13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0777FC75-4436-424F-81A4-3152A435176F} = {6567ACAA-63F5-4209-B2B1-7B13B407ACA7}
