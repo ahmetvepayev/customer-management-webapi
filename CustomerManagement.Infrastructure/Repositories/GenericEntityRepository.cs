@@ -14,7 +14,7 @@ public class GenericEntityRepository<TEntity> : IEntityRepository<TEntity>
         _context = context;
     }
 
-    public IEnumerable<TEntity> GetAll()
+    public List<TEntity> GetAll()
     {
         return _context.Set<TEntity>().ToList();
     }
@@ -34,8 +34,13 @@ public class GenericEntityRepository<TEntity> : IEntityRepository<TEntity>
         _context.Set<TEntity>().Remove(entity);
     }
 
-    public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> condition)
+    public List<TEntity> FindAll(Expression<Func<TEntity, bool>> condition)
     {
         return _context.Set<TEntity>().Where(condition).ToList();
+    }
+
+    public bool Exists(int id)
+    {
+        return _context.Set<TEntity>().Any(e => e.Id == id);
     }
 }

@@ -60,9 +60,10 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
     public StatusResponse Add(CommercialTransactionAddRequest request)
     {
         int code;
+        List<string> errors;
         
         var customer = _customerRepository.GetById(request.CustomerId);
-        if (!request.IsValid(customer, out List<string> errors))
+        if (!request.IsValid(customer, out errors))
         {
             code = 400;
             return new StatusResponse(code, errors);
@@ -87,9 +88,10 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
     public StatusResponse Update(int id, CommercialTransactionUpdateRequest request)
     {
         int code;
+        List<string> errors;
 
         var customer = _customerRepository.GetById(request.CustomerId);
-        if (!request.IsValid(customer, out List<string> errors))
+        if (!request.IsValid(customer, out errors))
         {
             code = 400;
             return new StatusResponse(code, errors);
@@ -121,6 +123,8 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
     public StatusResponse Delete(int id)
     {
         int code;
+        List<string> errors;
+
         var deletedEntry = _commercialTransactionRepository.GetById(id);
 
         if (deletedEntry == null)
@@ -134,7 +138,7 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
         if (_unitOfWork.SaveChanges() == 0)
         {
             code = 500;
-            List<string> errors = new(){
+            errors = new(){
                 "The database responded with an error"
             };
             return new StatusResponse(code, errors);
@@ -142,5 +146,34 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
 
         code = 200;
         return new StatusResponse(code);
+    }
+
+    public ObjectResponse<List<CommercialTransactionGetResponse>> GetAllForCustomer(int customerId)
+    {
+        int code;
+        List<string> errors;
+
+        var customer = _customerRepository.GetByIdIncludeCommercialTransactions(customerId);
+        if (customer == null)
+        {
+            code = 404;
+            errors = new(){
+                "Customer with the given CustomerId doesn't exist"
+            };
+            return new ObjectResponse<List<CommercialTransactionGetResponse>>(code, errors);
+        }
+
+        if (customer.CommercialTransactions == null || !customer.CommercialTransactions.Any())
+        {
+            code = 404;
+            errors = new(){
+                "There are no CommercialTransactions for the given Customer"
+            };
+            return new ObjectResponse<List<CommercialTransactionGetResponse>>(code, errors);
+        }
+
+        var data = customer.CommercialTransactions.Select(x => _mapper.Map<CommercialTransactionGetResponse>(x)).ToList();
+        code = 200;
+        return new ObjectResponse<List<CommercialTransactionGetResponse>>(data, code);
     }
 }

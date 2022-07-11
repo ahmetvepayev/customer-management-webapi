@@ -59,8 +59,9 @@ public class CustomerService : PersistingServiceBase, ICustomerService
     public StatusResponse Add(CustomerAddRequest request)
     {
         int code;
+        List<string> errors;
 
-        if (!request.IsValid(out List<string> errors))
+        if (!request.IsValid(out errors))
         {
             code = 400;
             return new StatusResponse(code, errors);
@@ -85,8 +86,9 @@ public class CustomerService : PersistingServiceBase, ICustomerService
     public StatusResponse Update(int id, CustomerUpdateRequest request)
     {
         int code;
+        List<string> errors;
 
-        if (!request.IsValid(out List<string> errors))
+        if (!request.IsValid(out errors))
         {
             code = 400;
             return new StatusResponse(code, errors);

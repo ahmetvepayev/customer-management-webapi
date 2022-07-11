@@ -7,6 +7,7 @@ public interface ICommercialTransactionService
 {
     ObjectResponse<List<CommercialTransactionGetResponse>> GetAll();
     ObjectResponse<CommercialTransactionGetResponse> GetById(int id);
+    ObjectResponse<List<CommercialTransactionGetResponse>> GetAllForCustomer(int customerId);
     StatusResponse Add(CommercialTransactionAddRequest request);
     StatusResponse Update(int id, CommercialTransactionUpdateRequest request);
     StatusResponse Delete(int id);

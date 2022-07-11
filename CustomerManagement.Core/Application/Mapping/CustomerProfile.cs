@@ -13,6 +13,7 @@ public class CustomerProfile : Profile
         CreateMap<CustomerAddRequest, Customer>()
             .ForMember(
                 dest => dest.Phone,
+                // extracts only digits from a given phone no
                 opt => opt.MapFrom(src => new String(src.Phone.Where(Char.IsDigit).ToArray()))
             )
             .ForMember(
@@ -22,6 +23,7 @@ public class CustomerProfile : Profile
         CreateMap<CustomerUpdateRequest, Customer>()
             .ForMember(
                 dest => dest.Phone,
+                // extracts only digits from a given phone no
                 opt => opt.MapFrom(src => new String(src.Phone.Where(Char.IsDigit).ToArray()))
             )
             .ForMember(

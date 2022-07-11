@@ -41,6 +41,19 @@ public class CommercialTransactionController : ControllerBase
         return new ObjectResult(response){StatusCode =  response.StatusCode};
     }
 
+    [HttpGet("/Customers/{customerId}/[controller]s")]
+    public IActionResult GetAllForCustomer(int customerId)
+    {
+        var response = _commercialTransactionService.GetAllForCustomer(customerId);
+
+        if (response.Data == null && (response.Errors == null || !response.Errors.Any()))
+        {
+            return new StatusCodeResult(response.StatusCode);
+        }
+
+        return new ObjectResult(response){StatusCode =  response.StatusCode};
+    }
+
     [HttpPost]
     public IActionResult Add(CommercialTransactionAddRequest request)
     {
