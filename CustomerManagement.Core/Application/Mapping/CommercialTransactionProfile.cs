@@ -9,7 +9,23 @@ public class CommercialTransactionProfile : Profile
     public CommercialTransactionProfile()
     {
         CreateMap<CommercialTransaction, CommercialTransactionGetResponse>();
-        CreateMap<CommercialTransactionAddRequest, CommercialTransaction>();
-        CreateMap<CommercialTransactionUpdateRequest, CommercialTransaction>();
+        CreateMap<CommercialTransactionAddRequest, CommercialTransaction>()
+            .ForMember(
+                dest => dest.Id,
+                act => act.Ignore()
+            )
+            .ForMember(
+                dest => dest.Customer,
+                act => act.Ignore()
+            );
+        CreateMap<CommercialTransactionUpdateRequest, CommercialTransaction>()
+            .ForMember(
+                dest => dest.Id,
+                act => act.Ignore()
+            )
+            .ForMember(
+                dest => dest.Customer,
+                act => act.Ignore()
+            );
     }
 }

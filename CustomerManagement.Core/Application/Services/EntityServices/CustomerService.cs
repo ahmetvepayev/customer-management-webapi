@@ -133,7 +133,7 @@ public class CustomerService : PersistingServiceBase, ICustomerService
             return new StatusResponse(code, errors);
         }
 
-        updatedEntry = _mapper.Map<Customer>(request);
+        _mapper.Map<CustomerUpdateRequest, Customer>(request, updatedEntry);
 
         try
         {

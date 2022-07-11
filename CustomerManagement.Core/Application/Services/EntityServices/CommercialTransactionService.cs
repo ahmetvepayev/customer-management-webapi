@@ -72,7 +72,18 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
         var addedEntry = _mapper.Map<CommercialTransaction>(request);
         _commercialTransactionRepository.Add(addedEntry);
 
-        if (_unitOfWork.SaveChanges() == 0)
+        try
+        {
+            if (_unitOfWork.SaveChanges() == 0)
+            {
+                code = 400;
+                errors = new(){
+                    "Changes to the database did not persist"
+                };
+                return new StatusResponse(code, errors);
+            }
+        }
+        catch
         {
             code = 500;
             errors = new(){
@@ -90,13 +101,6 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
         int code;
         List<string> errors;
 
-        var customer = _customerRepository.GetById(request.CustomerId);
-        if (!request.IsValid(customer, out errors))
-        {
-            code = 400;
-            return new StatusResponse(code, errors);
-        }
-
         var updatedEntry = _commercialTransactionRepository.GetById(id);
 
         if (updatedEntry == null)
@@ -105,9 +109,27 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
             return new StatusResponse(code);
         }
 
-        updatedEntry = _mapper.Map<CommercialTransaction>(request);
+        var customer = _customerRepository.GetById(request.CustomerId);
+        if (!request.IsValid(customer, out errors))
+        {
+            code = 400;
+            return new StatusResponse(code, errors);
+        }
 
-        if (_unitOfWork.SaveChanges() == 0)
+        _mapper.Map<CommercialTransactionUpdateRequest, CommercialTransaction>(request, updatedEntry);
+
+        try
+        {
+            if (_unitOfWork.SaveChanges() == 0)
+            {
+                code = 400;
+                errors = new(){
+                    "Changes to the database did not persist"
+                };
+                return new StatusResponse(code, errors);
+            }
+        }
+        catch
         {
             code = 500;
             errors = new(){
@@ -135,7 +157,18 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
 
         _commercialTransactionRepository.Delete(deletedEntry);
 
-        if (_unitOfWork.SaveChanges() == 0)
+        try
+        {
+            if (_unitOfWork.SaveChanges() == 0)
+            {
+                code = 400;
+                errors = new(){
+                    "Changes to the database did not persist"
+                };
+                return new StatusResponse(code, errors);
+            }
+        }
+        catch
         {
             code = 500;
             errors = new(){

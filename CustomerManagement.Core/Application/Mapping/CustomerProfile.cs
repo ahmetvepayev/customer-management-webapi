@@ -12,10 +12,26 @@ public class CustomerProfile : Profile
         CreateMap<Customer, CustomerGetResponse>();
         CreateMap<CustomerAddRequest, Customer>()
             .ForMember(
+                dest => dest.Id,
+                act => act.Ignore()
+            )
+            .ForMember(
+                dest => dest.CommercialTransactions,
+                act => act.Ignore()
+            )
+            .ForMember(
                 dest => dest.Photo,
                 opt => opt.MapFrom(src => src.Photo.ToByteArray())
             );
         CreateMap<CustomerUpdateRequest, Customer>()
+            .ForMember(
+                dest => dest.Id,
+                act => act.Ignore()
+            )
+            .ForMember(
+                dest => dest.CommercialTransactions,
+                act => act.Ignore()
+            )
             .ForMember(
                 dest => dest.Photo,
                 opt => opt.MapFrom(src => src.Photo.ToByteArray())
