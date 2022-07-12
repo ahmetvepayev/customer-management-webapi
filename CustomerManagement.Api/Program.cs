@@ -1,10 +1,4 @@
-using CustomerManagement.Core.Application.Interfaces.EntityServices;
-using CustomerManagement.Core.Application.Services.EntityServices;
-using CustomerManagement.Core.Domain.Interfaces;
-using CustomerManagement.Core.Domain.Interfaces.Repositories;
-using CustomerManagement.Infrastructure.Database;
-using CustomerManagement.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
+using CustomerManagement.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,19 +9,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddServicesAndRepositories();
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<ICommercialTransactionService, CommercialTransactionService>();
-builder.Services.AddScoped<ICommercialTransactionRepository, CommercialTransactionRepository>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddDatabase(builder.Configuration);
 
-builder.Services.AddDbContext<AppDbContext>(options => {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NpgCon"), action => {
-        action.MigrationsAssembly("CustomerManagement.Infrastructure");
-    });
-});
+builder.Services.AddIdentityFramework();
 
 var app = builder.Build();
 
@@ -40,6 +26,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

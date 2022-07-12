@@ -1,10 +1,12 @@
+using CustomerManagement.Core.Application.Auth;
 using CustomerManagement.Core.Domain.Entities;
 using CustomerManagement.Core.Domain.EntityRules;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerManagement.Infrastructure.Database;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 {
     public DbSet<Customer> Customers { get; set; }
     public DbSet<CommercialTransaction> CommercialTransactions { get; set; }
@@ -16,6 +18,8 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Customer>().Property(e => e.Firstname).HasMaxLength(CustomerRules.FirstNameMaxLength);
         modelBuilder.Entity<Customer>().Property(e => e.LastName).HasMaxLength(CustomerRules.LastNameMaxLength);
         modelBuilder.Entity<Customer>().Property(e => e.Email).HasMaxLength(CustomerRules.EmailMaxLength);

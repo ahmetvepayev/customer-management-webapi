@@ -6,6 +6,7 @@ using CustomerManagement.Core.Application.Interfaces.EntityServices;
 using CustomerManagement.Core.Domain.Entities;
 using CustomerManagement.Core.Domain.Interfaces;
 using CustomerManagement.Core.Domain.Interfaces.Repositories;
+using CustomerManagement.Utility.Extensions;
 
 namespace CustomerManagement.Core.Application.Services.EntityServices;
 
@@ -28,7 +29,7 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
         int code;
         var rawData = _commercialTransactionRepository.GetAll();
 
-        if (rawData == null || !rawData.Any())
+        if (rawData.IsNullOrEmpty())
         {
             code = 404;
             return new ObjectResponse<List<CommercialTransactionGetResponse>>(code);
@@ -196,7 +197,7 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
             return new ObjectResponse<List<CommercialTransactionGetResponse>>(code, errors);
         }
 
-        if (customer.CommercialTransactions == null || !customer.CommercialTransactions.Any())
+        if (customer.CommercialTransactions.IsNullOrEmpty())
         {
             code = 404;
             errors = new(){

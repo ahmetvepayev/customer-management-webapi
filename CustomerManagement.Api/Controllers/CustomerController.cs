@@ -1,3 +1,4 @@
+using CustomerManagement.Api.Extensions;
 using CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
 using CustomerManagement.Core.Application.Interfaces.EntityServices;
 using Microsoft.AspNetCore.Mvc;
@@ -5,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CustomerManagement.Api.Controllers;
 
 [ApiController]
-[Route("[controller]s")]
+[Route("api/[controller]s")]
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _customerService;
@@ -20,12 +21,7 @@ public class CustomerController : ControllerBase
     {
         var response = _customerService.GetAll();
 
-        if (response.Data == null && (response.Errors == null || !response.Errors.Any()))
-        {
-            return new StatusCodeResult(response.StatusCode);
-        }
-
-        return new ObjectResult(response){StatusCode = response.StatusCode};
+        return response.GetActionResult();
     }
 
     [HttpGet("{id}")]
@@ -33,47 +29,30 @@ public class CustomerController : ControllerBase
     {
         var response = _customerService.GetById(id);
 
-        if (response.Data == null && (response.Errors == null || !response.Errors.Any()))
-        {
-            return new StatusCodeResult(response.StatusCode);
-        }
-
-        return new ObjectResult(response){StatusCode =  response.StatusCode};
+        return response.GetActionResult();
     }
 
     [HttpPost]
     public IActionResult Add(CustomerAddRequest request)
     {
         var response = _customerService.Add(request);
-        if (response.Errors == null || !response.Errors.Any())
-        {
-            return new StatusCodeResult(response.StatusCode);
-        }
-
-        return new ObjectResult(response){StatusCode = response.StatusCode};
+        
+        return response.GetActionResult();
     }
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, CustomerUpdateRequest request)
     {
         var response = _customerService.Update(id, request);
-        if (response.Errors == null || !response.Errors.Any())
-        {
-            return new StatusCodeResult(response.StatusCode);
-        }
-
-        return new ObjectResult(response){StatusCode = response.StatusCode};
+        
+        return response.GetActionResult();
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         var response = _customerService.Delete(id);
-        if (response.Errors == null || !response.Errors.Any())
-        {
-            return new StatusCodeResult(response.StatusCode);
-        }
-
-        return new ObjectResult(response){StatusCode = response.StatusCode};
+        
+        return response.GetActionResult();
     }
 }
