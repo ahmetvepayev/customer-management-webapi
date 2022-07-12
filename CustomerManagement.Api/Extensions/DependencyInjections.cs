@@ -1,5 +1,5 @@
 using CustomerManagement.Core.Application.Auth;
-using CustomerManagement.Core.Application.Interfaces;
+using CustomerManagement.Core.Application.Interfaces.AuthServices;
 using CustomerManagement.Core.Application.Interfaces.EntityServices;
 using CustomerManagement.Core.Application.Services.EntityServices;
 using CustomerManagement.Core.Domain.Interfaces;

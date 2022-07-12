@@ -1,6 +1,6 @@
 using CustomerManagement.Api.Extensions;
 using CustomerManagement.Core.Application.Dtos.AuthDtos;
-using CustomerManagement.Core.Application.Interfaces;
+using CustomerManagement.Core.Application.Interfaces.AuthServices;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -19,6 +19,14 @@ public class AuthController : ControllerBase
     {
         var response = await _userService.CreateUserAsync(request);
         
+        return response.GetActionResult();
+    }
+
+    [HttpDelete("users")]
+    public async Task<IActionResult> DeleteUser(UserRemoveRequest request)
+    {
+        var response = await _userService.RemoveUserAsync(request);
+
         return response.GetActionResult();
     }
 }

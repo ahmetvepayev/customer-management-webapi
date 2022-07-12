@@ -1,11 +1,11 @@
 using CustomerManagement.Core.Application.Dtos.ApiModelWrappers;
 using CustomerManagement.Core.Application.Dtos.AuthDtos;
 
-namespace CustomerManagement.Core.Application.Interfaces;
+namespace CustomerManagement.Core.Application.Interfaces.AuthServices;
 
 public interface IUserService
 {
-    Task<StatusResponse> CreateUserAsync(UserAddRequest request);
+    Task<ObjectResponse<UserAddResponse>> CreateUserAsync(UserAddRequest request);
     Task<StatusResponse> RemoveUserAsync(UserRemoveRequest request);
     Task<StatusResponse> AddRoleToUserAsync(UserAddRoleRequest request);
     Task<StatusResponse> RemoveRoleFromUserAsync(UserRemoveRoleRequest request);

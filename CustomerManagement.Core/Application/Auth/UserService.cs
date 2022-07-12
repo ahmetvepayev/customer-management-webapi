@@ -1,7 +1,7 @@
 using AutoMapper;
 using CustomerManagement.Core.Application.Dtos.ApiModelWrappers;
 using CustomerManagement.Core.Application.Dtos.AuthDtos;
-using CustomerManagement.Core.Application.Interfaces;
+using CustomerManagement.Core.Application.Interfaces.AuthServices;
 using Microsoft.AspNetCore.Identity;
 
 namespace CustomerManagement.Core.Application.Auth;
@@ -21,20 +21,40 @@ public class UserService : IUserService
         _signInManager = signInManager;
     }
 
-    public async Task<StatusResponse> CreateUserAsync(UserAddRequest request)
+    public async Task<ObjectResponse<UserAddResponse>> CreateUserAsync(UserAddRequest request)
     {
         int code;
         List<string> errors;
 
         var user = _mapper.Map<AppUser>(request);
-        IdentityResult result = await _userManager.CreateAsync(user, request.Password);
+        var result = await _userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
         {
             code = 400;
-            errors = new(){
-                "UserName or Password not acceptable"
-            };
+            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            return new ObjectResponse<UserAddResponse>(code, errors);
+        }
+
+        code = 200;
+        var response = _mapper.Map<UserAddResponse>(user);
+
+        return new ObjectResponse<UserAddResponse>(response, code);
+    }
+
+    public async Task<StatusResponse> RemoveUserAsync(UserRemoveRequest request)
+    {
+        int code;
+        List<string> errors;
+
+        var user = await _userManager.FindByNameAsync(request.UserName);
+        
+        var result = await _userManager.DeleteAsync(user);
+
+        if (!result.Succeeded)
+        {
+            code = 400;
+            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
             return new StatusResponse(code, errors);
         }
 
@@ -42,17 +62,12 @@ public class UserService : IUserService
         return new StatusResponse(code);
     }
 
-    public Task<StatusResponse> RemoveUserAsync(UserRemoveRequest request)
+    public async Task<StatusResponse> AddRoleToUserAsync(UserAddRoleRequest request)
     {
         throw new NotImplementedException();
     }
 
-    public Task<StatusResponse> AddRoleToUserAsync(UserAddRoleRequest request)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<StatusResponse> RemoveRoleFromUserAsync(UserRemoveRoleRequest request)
+    public async Task<StatusResponse> RemoveRoleFromUserAsync(UserRemoveRoleRequest request)
     {
         throw new NotImplementedException();
     }
