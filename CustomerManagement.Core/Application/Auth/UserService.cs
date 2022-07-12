@@ -62,14 +62,86 @@ public class UserService : IUserService
         return new StatusResponse(code);
     }
 
-    public async Task<StatusResponse> AddRoleToUserAsync(UserAddRoleRequest request)
+    public async Task<ObjectResponse<UserAddRolesResponse>> AddRolesToUserAsync(UserAddRolesRequest request)
     {
-        throw new NotImplementedException();
+        int code;
+        List<string> errors;
+
+        var user = await _userManager.FindByNameAsync(request.UserName);
+
+        if (user == null)
+        {
+            code = 404;
+            return new ObjectResponse<UserAddRolesResponse>(code);
+        }
+
+        var result = await _userManager.AddToRolesAsync(user, request.Roles);
+
+        if (!result.Succeeded)
+        {
+            code = 400;
+            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            return new ObjectResponse<UserAddRolesResponse>(code, errors);
+        }
+
+        user = await _userManager.FindByNameAsync(request.UserName);
+
+        var data = _mapper.Map<UserAddRolesResponse>(user);
+        data.Roles = request.Roles;
+
+        code = 200;
+        return new ObjectResponse<UserAddRolesResponse>(data, code);
     }
 
-    public async Task<StatusResponse> RemoveRoleFromUserAsync(UserRemoveRoleRequest request)
+    public async Task<ObjectResponse<UserRemoveRolesResponse>> RemoveRolesFromUserAsync(UserRemoveRolesRequest request)
     {
-        throw new NotImplementedException();
+        int code;
+        List<string> errors;
+
+        var user = await _userManager.FindByNameAsync(request.UserName);
+
+        if (user == null)
+        {
+            code = 404;
+            return new ObjectResponse<UserRemoveRolesResponse>(code);
+        }
+
+        var result = await _userManager.RemoveFromRolesAsync(user, request.Roles);
+
+        if (!result.Succeeded)
+        {
+            code = 400;
+            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            return new ObjectResponse<UserRemoveRolesResponse>(code, errors);
+        }
+
+        user = await _userManager.FindByNameAsync(request.UserName);
+
+        var data = _mapper.Map<UserRemoveRolesResponse>(user);
+        data.Roles = new(await _userManager.GetRolesAsync(user));
+
+        code = 200;
+        return new ObjectResponse<UserRemoveRolesResponse>(data, code);
+    }
+
+    public async Task<StatusResponse> CreateRoleAsync(RoleAddRequest request)
+    {
+        int code;
+        List<string> errors;
+        
+        var role = _mapper.Map<AppRole>(request);
+
+        var result = await _roleManager.CreateAsync(role);
+
+        if (!result.Succeeded)
+        {
+            code = 400;
+            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            return new StatusResponse(code, errors);
+        }
+
+        code = 200;
+        return new StatusResponse(code);
     }
 
     public ObjectResponse<AuthTokenResponse> GetToken(UserGetTokenRequest request)

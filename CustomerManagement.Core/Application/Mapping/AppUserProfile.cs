@@ -10,7 +10,11 @@ public class AppUserProfile : Profile
     {
         CreateMap<UserAddRequest, AppUser>();
         CreateMap<AppUser, UserAddResponse>();
-        
+
         CreateMap<UserRemoveRequest, AppUser>();
+
+        CreateMap<AppUser, UserAddRolesResponse>();
+
+        CreateMap<AppUser, UserRemoveRolesResponse>();
     }
 }

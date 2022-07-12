@@ -7,8 +7,9 @@ public interface IUserService
 {
     Task<ObjectResponse<UserAddResponse>> CreateUserAsync(UserAddRequest request);
     Task<StatusResponse> RemoveUserAsync(UserRemoveRequest request);
-    Task<StatusResponse> AddRoleToUserAsync(UserAddRoleRequest request);
-    Task<StatusResponse> RemoveRoleFromUserAsync(UserRemoveRoleRequest request);
+    Task<ObjectResponse<UserAddRolesResponse>> AddRolesToUserAsync(UserAddRolesRequest request);
+    Task<ObjectResponse<UserRemoveRolesResponse>> RemoveRolesFromUserAsync(UserRemoveRolesRequest request);
+    Task<StatusResponse> CreateRoleAsync(RoleAddRequest request);
     ObjectResponse<AuthTokenResponse> GetToken(UserGetTokenRequest request);
     ObjectResponse<AuthTokenResponse> GetToken(string refreshToken);
 }

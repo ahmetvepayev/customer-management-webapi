@@ -29,4 +29,28 @@ public class AuthController : ControllerBase
 
         return response.GetActionResult();
     }
+
+    [HttpPost("users/roles")]
+    public async Task<IActionResult> AddRolesToUser(UserAddRolesRequest request)
+    {
+        var response = await _userService.AddRolesToUserAsync(request);
+
+        return response.GetActionResult();
+    }
+
+    [HttpDelete("users/roles")]
+    public async Task<IActionResult> RemoveRolesFromUser(UserRemoveRolesRequest request)
+    {
+        var response = await _userService.RemoveRolesFromUserAsync(request);
+
+        return response.GetActionResult();
+    }
+
+    [HttpPost("roles")]
+    public async Task<IActionResult> CreateRole(RoleAddRequest request)
+    {
+        var response = await _userService.CreateRoleAsync(request);
+
+        return response.GetActionResult();
+    }
 }
