@@ -1,24 +1,30 @@
+using System.Security.Claims;
 using AutoMapper;
 using CustomerManagement.Core.Application.Dtos.ApiModelWrappers;
 using CustomerManagement.Core.Application.Dtos.AuthDtos;
 using CustomerManagement.Core.Application.Interfaces.AuthServices;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace CustomerManagement.Core.Application.Auth;
 
 public class UserService : IUserService
 {
+    private readonly IConfiguration _config;
     private readonly IMapper _mapper;
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<AppRole> _roleManager;
     private readonly SignInManager<AppUser> _signInManager;
+    private readonly ITokenService _tokenService;
 
-    public UserService(IMapper mapper, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager)
+    public UserService(IConfiguration config, IMapper mapper, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
     {
+        _config = config;
         _mapper = mapper;
         _userManager = userManager;
         _roleManager = roleManager;
         _signInManager = signInManager;
+        _tokenService = tokenService;
     }
 
     public async Task<ObjectResponse<UserAddResponse>> CreateUserAsync(UserAddRequest request)
@@ -32,7 +38,7 @@ public class UserService : IUserService
         if (!result.Succeeded)
         {
             code = 400;
-            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            errors = new(result.Errors.Select(e => e.Description));
             return new ObjectResponse<UserAddResponse>(code, errors);
         }
 
@@ -54,7 +60,7 @@ public class UserService : IUserService
         if (!result.Succeeded)
         {
             code = 400;
-            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            errors = new(result.Errors.Select(e => e.Description));
             return new StatusResponse(code, errors);
         }
 
@@ -75,16 +81,30 @@ public class UserService : IUserService
             return new ObjectResponse<UserAddRolesResponse>(code);
         }
 
-        var result = await _userManager.AddToRolesAsync(user, request.Roles);
+        try
+        {
+            var result = await _userManager.AddToRolesAsync(user, request.Roles);
 
-        if (!result.Succeeded)
+            if (!result.Succeeded)
+            {
+                code = 400;
+                errors = new(result.Errors.Select(e => e.Description));
+                return new ObjectResponse<UserAddRolesResponse>(code, errors);
+            }
+        }
+        catch(InvalidOperationException ex)
         {
             code = 400;
-            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            errors = new(){
+                ex.Message
+            };
+            for(var inner = ex.InnerException; inner != null; inner = inner.InnerException)
+            {
+                errors.Add(inner.Message);
+            }
+            
             return new ObjectResponse<UserAddRolesResponse>(code, errors);
         }
-
-        user = await _userManager.FindByNameAsync(request.UserName);
 
         var data = _mapper.Map<UserAddRolesResponse>(user);
         data.Roles = request.Roles;
@@ -111,11 +131,9 @@ public class UserService : IUserService
         if (!result.Succeeded)
         {
             code = 400;
-            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            errors = new(result.Errors.Select(e => e.Description));
             return new ObjectResponse<UserRemoveRolesResponse>(code, errors);
         }
-
-        user = await _userManager.FindByNameAsync(request.UserName);
 
         var data = _mapper.Map<UserRemoveRolesResponse>(user);
         data.Roles = new(await _userManager.GetRolesAsync(user));
@@ -136,7 +154,7 @@ public class UserService : IUserService
         if (!result.Succeeded)
         {
             code = 400;
-            errors = new(result.Errors.Select(e => $"Code: {e.Code}; Description: {e.Description}"));
+            errors = new(result.Errors.Select(e => e.Description));
             return new StatusResponse(code, errors);
         }
 
@@ -144,13 +162,143 @@ public class UserService : IUserService
         return new StatusResponse(code);
     }
 
-    public ObjectResponse<AuthTokenResponse> GetToken(UserGetTokenRequest request)
+    public async Task<ObjectResponse<AuthTokenResponse>> UserLoginAsync(UserLoginRequest request)
     {
-        throw new NotImplementedException();
+        int code;
+        List<string> errors;
+
+        var user = await _userManager.FindByNameAsync(request.UserName);
+
+        if (user == null)
+        {
+            code = 400;
+            errors = new(){
+                "Incorrect UserName and Password combination"
+            };
+            return new ObjectResponse<AuthTokenResponse>(code, errors);
+        }
+
+        if (!await _userManager.CheckPasswordAsync(user, request.Password))
+        {
+            code = 400;
+            errors = new(){
+                "Incorrect UserName and Password combination"
+            };
+            return new ObjectResponse<AuthTokenResponse>(code, errors);
+        }
+
+        errors = new();
+        var data = await GenerateTokenResponse(user, errors);
+
+        if (data == null)
+        {
+            code = 500;
+            return new ObjectResponse<AuthTokenResponse>(code, errors);
+        }
+
+        code = 200;
+        return new ObjectResponse<AuthTokenResponse>(data, code);
     }
 
-    public ObjectResponse<AuthTokenResponse> GetToken(string refreshToken)
+    public async Task<ObjectResponse<AuthTokenResponse>> UserLoginRefreshAsync(UserLoginRefreshRequest request)
     {
-        throw new NotImplementedException();
+        int code;
+        List<string> errors;
+
+        var user = await _userManager.FindByNameAsync(request.UserName);
+
+        if (user == null)
+        {
+            code = 400;
+            errors = new(){
+                "Incorrect UserName and RefreshToken combination"
+            };
+            return new ObjectResponse<AuthTokenResponse>(code, errors);
+        }
+        
+        if (user.RefreshToken != request.RefreshToken)
+        {
+            code = 400;
+            errors = new(){
+                "Incorrect UserName and RefreshToken combination"
+            };
+            return new ObjectResponse<AuthTokenResponse>(code, errors);
+        }
+
+        if (user.RefreshTokenExpiration < DateTime.UtcNow)
+        {
+            code = 401;
+            errors = new(){
+                "RefreshToken expired"
+            };
+            return new ObjectResponse<AuthTokenResponse>(code, errors);
+        }
+
+        errors = new();
+        var data = await GenerateTokenResponse(user, errors);
+
+        if (data == null)
+        {
+            code = 500;
+            return new ObjectResponse<AuthTokenResponse>(code, errors);
+        }
+
+        code = 200;
+        return new ObjectResponse<AuthTokenResponse>(data, code);
+    }
+
+    private TokenOptions GetTokenOptions()
+    {
+        var options = new TokenOptions();
+        _config.GetSection("TokenSettings").Bind(options);
+
+        return options;
+    }
+
+    private async Task<AuthTokenResponse> GenerateTokenResponse(AppUser user, List<string> errors)
+    {
+        List<Claim> claims = new(){
+            new(ClaimTypes.Name, user.UserName)
+        };
+
+        var roles = await _userManager.GetRolesAsync(user);
+
+        if (roles != null)
+        {
+            claims.AddRange(
+                roles.Select(r => new Claim(ClaimTypes.Role, r))
+            );
+        }
+
+        var tokenOptions = GetTokenOptions();
+
+        var accessToken = _tokenService.GetAccessToken(claims, tokenOptions);
+
+        var refreshToken = _tokenService.GetRefreshToken();
+        var refreshTokenExpiration = DateTime.UtcNow.AddMinutes(tokenOptions.RefreshTokenDuration);
+
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiration = refreshTokenExpiration;
+
+        var result = await _userManager.UpdateAsync(user);
+
+        if (!result.Succeeded)
+        {
+            errors.AddRange(result.Errors.Select(e => e.Description));
+            return null;
+        }
+
+        var response = new AuthTokenResponse()
+        {
+            UserName = user.UserName,
+            SecurityStamp = user.SecurityStamp,
+            ConcurrencyStamp = user.ConcurrencyStamp,
+            AccessToken = accessToken,
+            AccessTokenExpiration = DateTime.UtcNow.AddMinutes(tokenOptions.AccessTokenDuration),
+            RefreshToken = refreshToken,
+            RefreshTokenExpiration = refreshTokenExpiration
+        };
+
+        return response;
     }
 }

@@ -53,4 +53,20 @@ public class AuthController : ControllerBase
 
         return response.GetActionResult();
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> UserLogin(UserLoginRequest request)
+    {
+        var response = await _userService.UserLoginAsync(request);
+
+        return response.GetActionResult();
+    }
+
+    [HttpPost("loginrefresh")]
+    public async Task<IActionResult> UserLoginRefresh(UserLoginRefreshRequest request)
+    {
+        var response = await _userService.UserLoginRefreshAsync(request);
+        
+        return response.GetActionResult();
+    }
 }

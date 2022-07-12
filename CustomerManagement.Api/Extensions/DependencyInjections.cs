@@ -1,4 +1,5 @@
 using CustomerManagement.Core.Application.Auth;
+using CustomerManagement.Core.Application.Auth.Jwt;
 using CustomerManagement.Core.Application.Interfaces.AuthServices;
 using CustomerManagement.Core.Application.Interfaces.EntityServices;
 using CustomerManagement.Core.Application.Services.EntityServices;
@@ -23,6 +24,7 @@ public static class DependencyInjections
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ITokenService, TokenService>();
 
         return services;
     }

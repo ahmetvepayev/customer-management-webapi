@@ -10,6 +10,6 @@ public interface IUserService
     Task<ObjectResponse<UserAddRolesResponse>> AddRolesToUserAsync(UserAddRolesRequest request);
     Task<ObjectResponse<UserRemoveRolesResponse>> RemoveRolesFromUserAsync(UserRemoveRolesRequest request);
     Task<StatusResponse> CreateRoleAsync(RoleAddRequest request);
-    ObjectResponse<AuthTokenResponse> GetToken(UserGetTokenRequest request);
-    ObjectResponse<AuthTokenResponse> GetToken(string refreshToken);
+    Task<ObjectResponse<AuthTokenResponse>> UserLoginAsync(UserLoginRequest request);
+    Task<ObjectResponse<AuthTokenResponse>> UserLoginRefreshAsync(UserLoginRefreshRequest request);
 }

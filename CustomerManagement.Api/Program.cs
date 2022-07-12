@@ -9,11 +9,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTokenAuth(builder.Configuration);
+
 builder.Services.AddServicesAndRepositories();
 
 builder.Services.AddDatabase(builder.Configuration);
 
 builder.Services.AddIdentityFramework();
+
 
 var app = builder.Build();
 
