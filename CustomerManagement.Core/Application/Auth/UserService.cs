@@ -102,12 +102,12 @@ public class UserService : IUserService
             {
                 errors.Add(inner.Message);
             }
-            
+
             return new ObjectResponse<UserAddRolesResponse>(code, errors);
         }
 
         var data = _mapper.Map<UserAddRolesResponse>(user);
-        data.Roles = request.Roles;
+        data.Roles = new(await _userManager.GetRolesAsync(user));
 
         code = 200;
         return new ObjectResponse<UserAddRolesResponse>(data, code);

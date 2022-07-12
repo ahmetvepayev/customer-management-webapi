@@ -1,6 +1,8 @@
 using CustomerManagement.Api.Extensions;
+using CustomerManagement.Core.Application.Auth;
 using CustomerManagement.Core.Application.Dtos.AuthDtos;
 using CustomerManagement.Core.Application.Interfaces.AuthServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -14,7 +16,7 @@ public class AuthController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost("users")]
+    [HttpPost("register")]
     public async Task<IActionResult> CreateUser(UserAddRequest request)
     {
         var response = await _userService.CreateUserAsync(request);
@@ -22,6 +24,7 @@ public class AuthController : ControllerBase
         return response.GetActionResult();
     }
 
+    [Authorize(Roles = AppRoleConstants.Admin)]
     [HttpDelete("users")]
     public async Task<IActionResult> DeleteUser(UserRemoveRequest request)
     {
@@ -30,6 +33,7 @@ public class AuthController : ControllerBase
         return response.GetActionResult();
     }
 
+    [Authorize(Roles = AppRoleConstants.Admin)]
     [HttpPost("users/roles")]
     public async Task<IActionResult> AddRolesToUser(UserAddRolesRequest request)
     {
@@ -38,6 +42,7 @@ public class AuthController : ControllerBase
         return response.GetActionResult();
     }
 
+    [Authorize(Roles = AppRoleConstants.Admin)]
     [HttpDelete("users/roles")]
     public async Task<IActionResult> RemoveRolesFromUser(UserRemoveRolesRequest request)
     {
@@ -46,6 +51,7 @@ public class AuthController : ControllerBase
         return response.GetActionResult();
     }
 
+    [Authorize(Roles = AppRoleConstants.Admin)]
     [HttpPost("roles")]
     public async Task<IActionResult> CreateRole(RoleAddRequest request)
     {
