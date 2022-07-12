@@ -43,7 +43,7 @@ public class TokenService : ITokenService
 
     private SecurityKey GetSymmetricSecurityKey(string key)
     {
-        return new SymmetricSecurityKey(key.ToByteArray());
+        return new SymmetricSecurityKey(key.ToByteArrayUTF8());
     }
 
     public string GetRefreshToken()

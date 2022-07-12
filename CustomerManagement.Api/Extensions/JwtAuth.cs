@@ -20,7 +20,7 @@ public static class JwtAuth
             {
                 ValidIssuer = tokenOptions.Issuer,
                 ValidAudience = tokenOptions.Audience[0],
-                IssuerSigningKey = new SymmetricSecurityKey(tokenOptions.SymmetricSecurityKey.ToByteArray()),
+                IssuerSigningKey = new SymmetricSecurityKey(tokenOptions.SymmetricSecurityKey.ToByteArrayUTF8()),
 
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,

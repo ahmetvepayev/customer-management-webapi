@@ -9,6 +9,7 @@ public class CommercialTransactionProfile : Profile
     public CommercialTransactionProfile()
     {
         CreateMap<CommercialTransaction, CommercialTransactionGetResponse>();
+
         CreateMap<CommercialTransactionAddRequest, CommercialTransaction>()
             .ForMember(
                 dest => dest.Id,
@@ -18,6 +19,7 @@ public class CommercialTransactionProfile : Profile
                 dest => dest.Customer,
                 act => act.Ignore()
             );
+            
         CreateMap<CommercialTransactionUpdateRequest, CommercialTransaction>()
             .ForMember(
                 dest => dest.Id,

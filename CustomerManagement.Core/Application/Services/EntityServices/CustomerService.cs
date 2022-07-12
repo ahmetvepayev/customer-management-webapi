@@ -62,6 +62,7 @@ public class CustomerService : PersistingServiceBase, ICustomerService
         int code;
         List<string> errors;
 
+        // Validator also extracts digits from the Phone string
         if (!request.IsValid(out errors))
         {
             code = 400;
@@ -110,6 +111,7 @@ public class CustomerService : PersistingServiceBase, ICustomerService
         int code;
         List<string> errors;
 
+        // Validator also extracts digits from the Phone string
         if (!request.IsValid(out errors))
         {
             code = 400;
@@ -124,7 +126,7 @@ public class CustomerService : PersistingServiceBase, ICustomerService
             return new StatusResponse(code);
         }
 
-        // ensure that the updated phone is unique
+        // Ensure that the updated phone is unique
         if (_customerRepository.Exists(c => c.Phone == request.Phone && c.Id != id))
         {
             code = 400;

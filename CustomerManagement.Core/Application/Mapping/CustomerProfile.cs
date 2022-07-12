@@ -9,7 +9,12 @@ public class CustomerProfile : Profile
 {
     public CustomerProfile()
     {
-        CreateMap<Customer, CustomerGetResponse>();
+        CreateMap<Customer, CustomerGetResponse>()
+            .ForMember(
+                dest => dest.Photo,
+                opt => opt.MapFrom(src => src.Photo.ToStringUTF8())
+            );
+
         CreateMap<CustomerAddRequest, Customer>()
             .ForMember(
                 dest => dest.Id,
@@ -21,8 +26,9 @@ public class CustomerProfile : Profile
             )
             .ForMember(
                 dest => dest.Photo,
-                opt => opt.MapFrom(src => src.Photo.ToByteArray())
+                opt => opt.MapFrom(src => src.Photo.ToByteArrayUTF8())
             );
+            
         CreateMap<CustomerUpdateRequest, Customer>()
             .ForMember(
                 dest => dest.Id,
@@ -34,7 +40,7 @@ public class CustomerProfile : Profile
             )
             .ForMember(
                 dest => dest.Photo,
-                opt => opt.MapFrom(src => src.Photo.ToByteArray())
+                opt => opt.MapFrom(src => src.Photo.ToByteArrayUTF8())
             );
     }
 }
