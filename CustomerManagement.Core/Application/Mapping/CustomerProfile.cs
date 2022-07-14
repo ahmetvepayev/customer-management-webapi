@@ -12,7 +12,7 @@ public class CustomerProfile : Profile
         CreateMap<Customer, CustomerGetResponse>()
             .ForMember(
                 dest => dest.Photo,
-                opt => opt.MapFrom(src => src.Photo.ToStringUTF8())
+                opt => opt.MapFrom(src => Convert.ToBase64String(src.Photo))
             );
 
         CreateMap<CustomerAddRequest, Customer>()
@@ -26,7 +26,7 @@ public class CustomerProfile : Profile
             )
             .ForMember(
                 dest => dest.Photo,
-                opt => opt.MapFrom(src => src.Photo.ToByteArrayUTF8())
+                opt => opt.MapFrom(src => Convert.FromBase64String(src.Photo))
             );
             
         CreateMap<CustomerUpdateRequest, Customer>()
@@ -40,7 +40,7 @@ public class CustomerProfile : Profile
             )
             .ForMember(
                 dest => dest.Photo,
-                opt => opt.MapFrom(src => src.Photo.ToByteArrayUTF8())
+                opt => opt.MapFrom(src => Convert.FromBase64String(src.Photo))
             );
     }
 }
