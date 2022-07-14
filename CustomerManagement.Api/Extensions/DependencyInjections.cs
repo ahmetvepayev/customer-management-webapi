@@ -6,6 +6,7 @@ using CustomerManagement.Core.Application.Services.EntityServices;
 using CustomerManagement.Core.Domain.Interfaces;
 using CustomerManagement.Core.Domain.Interfaces.Repositories;
 using CustomerManagement.Infrastructure.Database;
+using CustomerManagement.Infrastructure.Database.Seed;
 using CustomerManagement.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,8 @@ public static class DependencyInjections
                 action.MigrationsAssembly("CustomerManagement.Infrastructure");
             });
         });
+
+        services.AddScoped<DatabaseSeeder>();
         
         return services;
     }

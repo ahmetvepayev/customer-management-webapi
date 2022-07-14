@@ -13,4 +13,9 @@ public static class EncodingExtensions
     {
         return Encoding.UTF8.GetString(input);
     }
+
+    public static byte[] ToByteArrayFromBase64(this string input)
+    {
+        return Convert.FromBase64String(input);
+    }
 }

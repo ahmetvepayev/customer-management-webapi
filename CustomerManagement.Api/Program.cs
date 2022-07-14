@@ -23,6 +23,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    await app.InitializeDatabase();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
