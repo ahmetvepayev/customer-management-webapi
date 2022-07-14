@@ -7,20 +7,23 @@ using CustomerManagement.Core.Domain.Entities;
 using CustomerManagement.Core.Domain.Interfaces;
 using CustomerManagement.Core.Domain.Interfaces.Repositories;
 using CustomerManagement.Utility.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace CustomerManagement.Core.Application.Services.EntityServices;
 
 public class CustomerService : PersistingServiceBase, ICustomerService
 {
+    private readonly ILogger<CustomerService> _logger;
     private readonly IMapper _mapper;
     private readonly ICustomerRepository _customerRepository;
 
-    public CustomerService(IUnitOfWork unitOfWork, ICustomerRepository customerRepository, IMapper mapper)
+    public CustomerService(IUnitOfWork unitOfWork, ICustomerRepository customerRepository, IMapper mapper, ILogger<CustomerService> logger)
 
         : base(unitOfWork)
     {
         _customerRepository = customerRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public ObjectResponse<List<CustomerGetResponse>> GetAll()
@@ -92,8 +95,9 @@ public class CustomerService : PersistingServiceBase, ICustomerService
                 return new StatusResponse(code, errors);
             }
         }
-        catch
+        catch(Exception ex)
         {
+            _logger.LogError(ex, "Failed to add Customer");
             code = 500;
             errors = new(){
                 "The database responded with an error"
@@ -149,8 +153,9 @@ public class CustomerService : PersistingServiceBase, ICustomerService
                 return new StatusResponse(code, errors);
             }
         }
-        catch
+        catch(Exception ex)
         {
+            _logger.LogError(ex, "Failed to update Customer");
             code = 500;
             errors = new(){
                 "The database responded with an error"
@@ -175,8 +180,20 @@ public class CustomerService : PersistingServiceBase, ICustomerService
 
         _customerRepository.Delete(deletedEntry);
 
-        if (_unitOfWork.SaveChanges() == 0)
+        try
         {
+            if (_unitOfWork.SaveChanges() == 0)
+            {
+                code = 500;
+                List<string> errors = new(){
+                    "The database responded with an error"
+                };
+                return new StatusResponse(code, errors);
+            }
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete CommercialTransaction");
             code = 500;
             List<string> errors = new(){
                 "The database responded with an error"

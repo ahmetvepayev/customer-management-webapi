@@ -5,11 +5,13 @@ using CustomerManagement.Core.Application.Dtos.AuthDtos;
 using CustomerManagement.Core.Application.Interfaces.AuthServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace CustomerManagement.Core.Application.Auth;
 
 public class UserService : IUserService
 {
+    private readonly ILogger<UserService> _logger;
     private readonly IConfiguration _config;
     private readonly IMapper _mapper;
     private readonly UserManager<AppUser> _userManager;
@@ -17,8 +19,9 @@ public class UserService : IUserService
     private readonly SignInManager<AppUser> _signInManager;
     private readonly ITokenService _tokenService;
 
-    public UserService(IConfiguration config, IMapper mapper, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
+    public UserService(IConfiguration config, IMapper mapper, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager, ITokenService tokenService, ILogger<UserService> logger)
     {
+        _logger = logger;
         _config = config;
         _mapper = mapper;
         _userManager = userManager;
@@ -94,6 +97,7 @@ public class UserService : IUserService
         }
         catch(InvalidOperationException ex)
         {
+            _logger.LogError(ex, "Failed to add roles");
             code = 400;
             errors = new(){
                 ex.Message

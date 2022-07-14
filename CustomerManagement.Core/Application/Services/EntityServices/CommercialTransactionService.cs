@@ -7,21 +7,24 @@ using CustomerManagement.Core.Domain.Entities;
 using CustomerManagement.Core.Domain.Interfaces;
 using CustomerManagement.Core.Domain.Interfaces.Repositories;
 using CustomerManagement.Utility.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace CustomerManagement.Core.Application.Services.EntityServices;
 
 public class CommercialTransactionService : PersistingServiceBase, ICommercialTransactionService
 {
+    private readonly ILogger<CommercialTransactionService> _logger;
     private readonly IMapper _mapper;
     private readonly ICommercialTransactionRepository _commercialTransactionRepository;
     private readonly ICustomerRepository _customerRepository;
 
-    public CommercialTransactionService(IUnitOfWork unitOfWork, ICommercialTransactionRepository commercialTransactionRepository, IMapper mapper, ICustomerRepository customerRepository)
+    public CommercialTransactionService(IUnitOfWork unitOfWork, ICommercialTransactionRepository commercialTransactionRepository, IMapper mapper, ICustomerRepository customerRepository, ILogger<CommercialTransactionService> logger)
         : base(unitOfWork)
     {
         _commercialTransactionRepository = commercialTransactionRepository;
         _mapper = mapper;
         _customerRepository = customerRepository;
+        _logger = logger;
     }
 
     public ObjectResponse<List<CommercialTransactionGetResponse>> GetAll()
@@ -84,8 +87,9 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
                 return new StatusResponse(code, errors);
             }
         }
-        catch
+        catch(Exception ex)
         {
+            _logger.LogError(ex, "Failed to add CommercialTransaction");
             code = 500;
             errors = new(){
                 "The database responded with an error"
@@ -130,8 +134,9 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
                 return new StatusResponse(code, errors);
             }
         }
-        catch
+        catch(Exception ex)
         {
+            _logger.LogError(ex, "Failed to update CommercialTransaction");
             code = 500;
             errors = new(){
                 "The database responded with an error"
@@ -169,8 +174,9 @@ public class CommercialTransactionService : PersistingServiceBase, ICommercialTr
                 return new StatusResponse(code, errors);
             }
         }
-        catch
+        catch(Exception ex)
         {
+            _logger.LogError(ex, "Failed to delete CommercialTransaction");
             code = 500;
             errors = new(){
                 "The database responded with an error"
