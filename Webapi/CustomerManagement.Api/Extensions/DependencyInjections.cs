@@ -3,6 +3,7 @@ using CustomerManagement.Core.Application.Auth.Jwt;
 using CustomerManagement.Core.Application.Interfaces.AuthServices;
 using CustomerManagement.Core.Application.Interfaces.EntityServices;
 using CustomerManagement.Core.Application.Interfaces.Messaging;
+using CustomerManagement.Core.Application.Scheduling.QuartzJobs;
 using CustomerManagement.Core.Application.Services.EntityServices;
 using CustomerManagement.Core.Domain.Interfaces;
 using CustomerManagement.Core.Domain.Interfaces.Repositories;
@@ -13,6 +14,7 @@ using CustomerManagement.Infrastructure.Messaging.RabbitMq;
 using CustomerManagement.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 using RabbitMQ.Client;
 
 namespace CustomerManagement.Api.Extensions;
@@ -68,6 +70,31 @@ public static class DependencyInjections
 
         services.AddSingleton<RabbitMqClientWatermarkService>();
         services.AddSingleton<RabbitMqClientReportService>();
+        
+        return services;
+    }
+
+    public static IServiceCollection AddQuartzSchedules(this IServiceCollection services)
+    {
+        services.AddQuartz(config => {
+            config.UseMicrosoftDependencyInjectionJobFactory();
+
+            config.ScheduleJob<WeeklyReportJob>(trigger => trigger
+                .WithIdentity("WeeklyTrigger", "Messaging")
+                .StartAt(DateTimeOffset.UtcNow.AddMinutes(5))
+                .WithSchedule(CronScheduleBuilder.WeeklyOnDayAndHourAndMinute(DayOfWeek.Monday, 0, 0))
+            );
+
+            config.ScheduleJob<MonthlyReportJob>(trigger => trigger
+                .WithIdentity("MonthlyTrigger", "Messaging")
+                .StartAt(DateTimeOffset.UtcNow.AddMinutes(5))
+                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(1, 0, 0))
+            );
+        });
+
+        services.AddQuartzServer(options => {
+            options.WaitForJobsToComplete = true;
+        });
         
         return services;
     }

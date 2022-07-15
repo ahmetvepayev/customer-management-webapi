@@ -18,6 +18,9 @@ builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddIdentityFramework();
 
 
+builder.Services.AddQuartzSchedules();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
