@@ -2,14 +2,17 @@ using CustomerManagement.Core.Application.Auth;
 using CustomerManagement.Core.Application.Auth.Jwt;
 using CustomerManagement.Core.Application.Interfaces.AuthServices;
 using CustomerManagement.Core.Application.Interfaces.EntityServices;
+using CustomerManagement.Core.Application.Interfaces.Messaging;
 using CustomerManagement.Core.Application.Services.EntityServices;
 using CustomerManagement.Core.Domain.Interfaces;
 using CustomerManagement.Core.Domain.Interfaces.Repositories;
 using CustomerManagement.Infrastructure.Database;
 using CustomerManagement.Infrastructure.Database.Seed;
+using CustomerManagement.Infrastructure.Messaging;
 using CustomerManagement.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ.Client;
 
 namespace CustomerManagement.Api.Extensions;
 
@@ -26,6 +29,7 @@ public static class DependencyInjections
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IMessagePhotoWatermarkService, MessagePhotoWatermarkService>();
 
         return services;
     }
@@ -46,6 +50,19 @@ public static class DependencyInjections
     public static IServiceCollection AddIdentityFramework(this IServiceCollection services)
     {
         services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+        
+        return services;
+    }
+
+    public static IServiceCollection AddRabbitMq(this IServiceCollection services)
+    {
+        services.AddSingleton<ConnectionFactory>(new ConnectionFactory{
+            HostName = "localhost",
+            UserName = "guest",
+            Password = "guest",
+            Port = 5672,
+            RequestedConnectionTimeout = TimeSpan.FromSeconds(15)
+        });
         
         return services;
     }

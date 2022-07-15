@@ -3,6 +3,7 @@ using CustomerManagement.Core.Application.Dtos.ApiModelWrappers;
 using CustomerManagement.Core.Application.Dtos.EntityDtos.CustomerDtos;
 using CustomerManagement.Core.Application.DtoValidators;
 using CustomerManagement.Core.Application.Interfaces.EntityServices;
+using CustomerManagement.Core.Application.Interfaces.Messaging;
 using CustomerManagement.Core.Domain.Entities;
 using CustomerManagement.Core.Domain.Interfaces;
 using CustomerManagement.Core.Domain.Interfaces.Repositories;
@@ -16,14 +17,16 @@ public class CustomerService : PersistingServiceBase, ICustomerService
     private readonly ILogger<CustomerService> _logger;
     private readonly IMapper _mapper;
     private readonly ICustomerRepository _customerRepository;
+    private readonly IMessagePhotoWatermarkService _messagePhotoWatermarkService;
 
-    public CustomerService(IUnitOfWork unitOfWork, ICustomerRepository customerRepository, IMapper mapper, ILogger<CustomerService> logger)
+    public CustomerService(IUnitOfWork unitOfWork, ICustomerRepository customerRepository, IMapper mapper, ILogger<CustomerService> logger, IMessagePhotoWatermarkService messagePhotoWatermarkService)
 
         : base(unitOfWork)
     {
         _customerRepository = customerRepository;
         _mapper = mapper;
         _logger = logger;
+        _messagePhotoWatermarkService = messagePhotoWatermarkService;
     }
 
     public ObjectResponse<List<CustomerGetResponse>> GetAll()
@@ -105,6 +108,7 @@ public class CustomerService : PersistingServiceBase, ICustomerService
             return new StatusResponse(code, errors);
         }
         
+        _messagePhotoWatermarkService.AddWatermark(addedEntry.Id);
 
         code = 200;
         return new StatusResponse(code);
@@ -162,6 +166,8 @@ public class CustomerService : PersistingServiceBase, ICustomerService
             };
             return new StatusResponse(code, errors);
         }
+
+        _messagePhotoWatermarkService.AddWatermark(updatedEntry.Id);
 
         code = 200;
         return new StatusResponse(code);
