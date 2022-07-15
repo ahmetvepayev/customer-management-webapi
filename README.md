@@ -32,6 +32,7 @@ You need to install [Docker Engine](https://docs.docker.com/engine/install/) and
 + Clone the repository or download the source code.
 + Open a terminal window from the folder containing the ```docker-compose.yml``` file or navigate to that folder on your terminal.
 + Execute ```docker-compose up -d``` to start the application. Docker will automatically download all the necessary files required for the application and will set up separate container for PostgreSQL server and RabbitMQ. You can connect to ```http://localhost:15000/swagger``` from a web browser to see the API documentation.
++ The message queues in RabbitMQ will not be created until the API sends a message to the queue for the first time. Until then the other services will not be able to listen to those queues and the containers for those services will keep restarting until they can establish a connection.
 + When you're done with the application, execute ```docker-compose down --rmi all --volumes``` to shut down the containers and remove all files associated with the application.
 
 # API
