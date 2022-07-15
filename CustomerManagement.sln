@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagement.Api", "Webapi\CustomerManagement.Api\CustomerManagement.Api.csproj", "{5676E695-F6A5-4CE8-8D3D-BF15D5082BB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagement.Infrastructure", "Webapi\CustomerManagement.Infrastructure\CustomerManagement.Infrastructure.csproj", "{8A8344DB-78E4-4EC7-982B-2472306F2895}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerManagement.Core", "Webapi\CustomerManagement.Core", "{6567ACAA-63F5-4209-B2B1-7B13B407ACA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagement.Core.Domain", "Webapi\CustomerManagement.Core\Domain\CustomerManagement.Core.Domain.csproj", "{0777FC75-4436-424F-81A4-3152A435176F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagement.Core.Application", "Webapi\CustomerManagement.Core\Application\CustomerManagement.Core.Application.csproj", "{18131BC1-63B4-4CA0-B422-268D12D2718B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerManagement.Utility", "Webapi\CustomerManagement.Utility\CustomerManagement.Utility.csproj", "{F955B631-9D06-4551-A3D8-30A897A71A13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WatermarkService", "WatermarkService", "{B84C4047-5625-41EC-A56E-A28CD24FFC93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkService.Worker", "WatermarkService\WatermarkService.Worker\WatermarkService.Worker.csproj", "{45A8B052-9B12-4F30-9BC6-BF18A501BB50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WatermarkService.Core", "WatermarkService.Core", "{AF9B312A-71BA-4ED6-B2D1-78B9315ACF99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkService.Core.Domain", "WatermarkService\WatermarkService.Core\Domain\WatermarkService.Core.Domain.csproj", "{994ECA74-3D6B-456C-B441-BA351639993B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkService.Core.Application", "WatermarkService\WatermarkService.Core\Application\WatermarkService.Core.Application.csproj", "{5B428364-4BC5-4866-BB34-250638EE909A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkService.Infrastructure", "WatermarkService\WatermarkService.Infrastructure\WatermarkService.Infrastructure.csproj", "{F347A081-896F-444E-98B3-E9E8339297FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5676E695-F6A5-4CE8-8D3D-BF15D5082BB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5676E695-F6A5-4CE8-8D3D-BF15D5082BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5676E695-F6A5-4CE8-8D3D-BF15D5082BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5676E695-F6A5-4CE8-8D3D-BF15D5082BB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A8344DB-78E4-4EC7-982B-2472306F2895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A8344DB-78E4-4EC7-982B-2472306F2895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A8344DB-78E4-4EC7-982B-2472306F2895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A8344DB-78E4-4EC7-982B-2472306F2895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0777FC75-4436-424F-81A4-3152A435176F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0777FC75-4436-424F-81A4-3152A435176F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0777FC75-4436-424F-81A4-3152A435176F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0777FC75-4436-424F-81A4-3152A435176F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18131BC1-63B4-4CA0-B422-268D12D2718B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18131BC1-63B4-4CA0-B422-268D12D2718B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18131BC1-63B4-4CA0-B422-268D12D2718B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18131BC1-63B4-4CA0-B422-268D12D2718B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F955B631-9D06-4551-A3D8-30A897A71A13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F955B631-9D06-4551-A3D8-30A897A71A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F955B631-9D06-4551-A3D8-30A897A71A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F955B631-9D06-4551-A3D8-30A897A71A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A8B052-9B12-4F30-9BC6-BF18A501BB50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A8B052-9B12-4F30-9BC6-BF18A501BB50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A8B052-9B12-4F30-9BC6-BF18A501BB50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A8B052-9B12-4F30-9BC6-BF18A501BB50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{994ECA74-3D6B-456C-B441-BA351639993B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{994ECA74-3D6B-456C-B441-BA351639993B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{994ECA74-3D6B-456C-B441-BA351639993B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{994ECA74-3D6B-456C-B441-BA351639993B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B428364-4BC5-4866-BB34-250638EE909A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B428364-4BC5-4866-BB34-250638EE909A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B428364-4BC5-4866-BB34-250638EE909A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B428364-4BC5-4866-BB34-250638EE909A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F347A081-896F-444E-98B3-E9E8339297FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F347A081-896F-444E-98B3-E9E8339297FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F347A081-896F-444E-98B3-E9E8339297FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F347A081-896F-444E-98B3-E9E8339297FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0777FC75-4436-424F-81A4-3152A435176F} = {6567ACAA-63F5-4209-B2B1-7B13B407ACA7}
+		{18131BC1-63B4-4CA0-B422-268D12D2718B} = {6567ACAA-63F5-4209-B2B1-7B13B407ACA7}
+		{45A8B052-9B12-4F30-9BC6-BF18A501BB50} = {B84C4047-5625-41EC-A56E-A28CD24FFC93}
+		{AF9B312A-71BA-4ED6-B2D1-78B9315ACF99} = {B84C4047-5625-41EC-A56E-A28CD24FFC93}
+		{994ECA74-3D6B-456C-B441-BA351639993B} = {AF9B312A-71BA-4ED6-B2D1-78B9315ACF99}
+		{5B428364-4BC5-4866-BB34-250638EE909A} = {AF9B312A-71BA-4ED6-B2D1-78B9315ACF99}
+		{F347A081-896F-444E-98B3-E9E8339297FE} = {B84C4047-5625-41EC-A56E-A28CD24FFC93}
+	EndGlobalSection
+EndGlobal

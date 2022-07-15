@@ -1,27 +1,24 @@
 using CustomerManagement.Core.Application.Interfaces.Messaging;
 using CustomerManagement.Infrastructure.Messaging.RabbitMq;
-using CustomerManagement.Infrastructure.Messaging.RabbitMq.Constants;
 using RabbitMQ.Client;
 
 namespace CustomerManagement.Infrastructure.Messaging;
 
 public class MessagePhotoWatermarkService : IMessagePhotoWatermarkService
 {
-    private readonly RabbitMqClientService _rabbitMqClientService;
+    private readonly RabbitMqClientWatermarkService _rabbitMqClientWatermarkService;
 
-    public MessagePhotoWatermarkService(RabbitMqClientService rabbitMqClientService)
+    public MessagePhotoWatermarkService(RabbitMqClientWatermarkService rabbitMqClientWatermarkService)
     {
-        _rabbitMqClientService = rabbitMqClientService;
+        _rabbitMqClientWatermarkService = rabbitMqClientWatermarkService;
     }
 
     public void AddWatermark(int id)
     {
-        var exchangeName = WatermarkConstants.ExchangeName;
-        var exchangeType = WatermarkConstants.ExchangeType;
-        var routingKey = WatermarkConstants.RoutingKey;
-        var queueName = WatermarkConstants.QueueName;
+        var exchangeName = RabbitMqClientWatermarkService.ExchangeName;
+        var routingKey = RabbitMqClientWatermarkService.RoutingKey;
 
-        var channel = _rabbitMqClientService.Connect(exchangeName, exchangeType, routingKey, queueName);
+        var channel = _rabbitMqClientWatermarkService.Connect();
 
         var data = BitConverter.GetBytes(id);
 

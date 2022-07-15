@@ -9,6 +9,7 @@ using CustomerManagement.Core.Domain.Interfaces.Repositories;
 using CustomerManagement.Infrastructure.Database;
 using CustomerManagement.Infrastructure.Database.Seed;
 using CustomerManagement.Infrastructure.Messaging;
+using CustomerManagement.Infrastructure.Messaging.RabbitMq;
 using CustomerManagement.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,8 @@ public static class DependencyInjections
             Port = 5672,
             RequestedConnectionTimeout = TimeSpan.FromSeconds(15)
         });
+
+        services.AddSingleton<RabbitMqClientWatermarkService>();
         
         return services;
     }
