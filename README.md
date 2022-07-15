@@ -8,7 +8,7 @@ Customer management standalone Web API application. Application is divided into 
 + Store and modify commercial transaction data with customers
 + Login system which also uses access tokens and refresh tokens for role based authentication and authorization
 + Customer photos are watermarked using a separate service
-+ Separate report service produces weekly and monthly reports in Excel on customers with top 5 amount of transactions and on the amount of customers in each city, respectively
++ Separate report service produces weekly and monthly reports in Excel on customers with top 5 amount of transactions and on the amount of customers in each city, respectively. The reports can also be downloaded from the API
 
 # Architecture
 
@@ -39,7 +39,13 @@ Couple of remarks about the API :
 
 + Customer photos are accepted as base64 strings converted from the binaries
 
-# Libraries
+# Libraries & Technologies
 
++ The services target ASP.NET Core 6
+
++ Entity Framework Core is used for ORM & database querying
++ NpgSql for EfCore
++ Automapper for entity-dto mapping
 + ImageSharp for image processing in the watermark service
 + Quartz.NET for scheduling of the message firing from the API for the weekly and monthly Excel reports
++ ClosedXML for creating Excel tables
