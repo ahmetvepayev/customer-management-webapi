@@ -32,3 +32,14 @@ You need to install [Docker Engine](https://docs.docker.com/engine/install/) and
 + Open a terminal window from the folder containing the ```docker-compose.yml``` file or navigate to that folder on your terminal.
 + Execute ```docker-compose up -d``` to start the application. Docker will automatically download all the necessary files required for the application and will set up separate container for PostgreSQL server and RabbitMQ. You can connect to ```http://localhost:15000/swagger``` from a web browser to see the API documentation.
 + When you're done with the application, execute ```docker-compose down --rmi all --volumes``` to shut down the containers and remove all files associated with the application.
+
+# API
+
+Couple of remarks about the API :
+
++ Customer photos are accepted as base64 strings converted from the binaries
+
+# Libraries
+
++ ImageSharp for image processing in the watermark service
++ Quartz.NET for scheduling of the message firing from the API for the weekly and monthly Excel reports
