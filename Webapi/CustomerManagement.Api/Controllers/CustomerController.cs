@@ -59,4 +59,12 @@ public class CustomerController : ControllerBase
         
         return response.GetActionResult();
     }
+
+    [HttpDelete]
+    public IActionResult MassDelete(List<int> ids)
+    {
+        var response = _customerService.MassDelete(ids);
+
+        return response.GetActionResult();
+    }
 }

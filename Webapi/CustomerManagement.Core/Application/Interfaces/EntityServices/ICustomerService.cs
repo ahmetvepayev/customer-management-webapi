@@ -10,4 +10,5 @@ public interface ICustomerService
     StatusResponse Add(CustomerAddRequest request);
     StatusResponse Update(int id, CustomerUpdateRequest request);
     StatusResponse Delete(int id);
+    StatusResponse MassDelete(List<int> ids);
 }

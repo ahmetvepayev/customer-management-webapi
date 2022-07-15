@@ -199,7 +199,49 @@ public class CustomerService : PersistingServiceBase, ICustomerService
         }
         catch(Exception ex)
         {
-            _logger.LogError(ex, "Failed to delete CommercialTransaction");
+            _logger.LogError(ex, "Failed to delete Customer");
+            code = 500;
+            List<string> errors = new(){
+                "The database responded with an error"
+            };
+            return new StatusResponse(code, errors);
+        }
+
+        code = 200;
+        return new StatusResponse(code);
+    }
+
+    public StatusResponse MassDelete(List<int> ids)
+    {
+        int code;
+
+        foreach(int id in ids)
+        {
+            var deletedEntry = _customerRepository.GetById(id);
+
+            if (deletedEntry == null)
+            {
+                code = 404;
+                return new StatusResponse(code);
+            }
+
+            _customerRepository.Delete(deletedEntry);
+        }
+
+        try
+        {
+            if (_unitOfWork.SaveChanges() == 0)
+            {
+                code = 500;
+                List<string> errors = new(){
+                    "The database responded with an error"
+                };
+                return new StatusResponse(code, errors);
+            }
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete Customer(s)");
             code = 500;
             List<string> errors = new(){
                 "The database responded with an error"
