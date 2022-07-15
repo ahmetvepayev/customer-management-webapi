@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkService.Worker", "WatermarkService.Worker\WatermarkService.Worker.csproj", "{9790A317-D02F-42FF-9A51-B515CBD55D25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WatermarkService.Core", "WatermarkService.Core", "{DEB1E313-AEB2-4D48-B52A-5E306EF2CF55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkService.Core.Domain", "WatermarkService.Core\Domain\WatermarkService.Core.Domain.csproj", "{A99361EA-725A-472A-A8C9-60047F413A39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkService.Core.Application", "WatermarkService.Core\Application\WatermarkService.Core.Application.csproj", "{2905B002-70D3-4F52-B509-785BF983C77A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkService.Infrastructure", "WatermarkService.Infrastructure\WatermarkService.Infrastructure.csproj", "{2BD0A911-3240-48A8-B3FE-EB711951F138}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9790A317-D02F-42FF-9A51-B515CBD55D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9790A317-D02F-42FF-9A51-B515CBD55D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9790A317-D02F-42FF-9A51-B515CBD55D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9790A317-D02F-42FF-9A51-B515CBD55D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A99361EA-725A-472A-A8C9-60047F413A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A99361EA-725A-472A-A8C9-60047F413A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A99361EA-725A-472A-A8C9-60047F413A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A99361EA-725A-472A-A8C9-60047F413A39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2905B002-70D3-4F52-B509-785BF983C77A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2905B002-70D3-4F52-B509-785BF983C77A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2905B002-70D3-4F52-B509-785BF983C77A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2905B002-70D3-4F52-B509-785BF983C77A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD0A911-3240-48A8-B3FE-EB711951F138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD0A911-3240-48A8-B3FE-EB711951F138}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD0A911-3240-48A8-B3FE-EB711951F138}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD0A911-3240-48A8-B3FE-EB711951F138}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A99361EA-725A-472A-A8C9-60047F413A39} = {DEB1E313-AEB2-4D48-B52A-5E306EF2CF55}
+		{2905B002-70D3-4F52-B509-785BF983C77A} = {DEB1E313-AEB2-4D48-B52A-5E306EF2CF55}
+	EndGlobalSection
+EndGlobal

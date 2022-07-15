@@ -1,0 +1,64 @@
+services:
+  postgresqldb:
+    container_name: postgresql-cont
+    image: postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=adminpass
+    ports:
+      - 5432:5432
+    networks:
+      - dbcon
+
+  rabbitmqmessage:
+    container_name: rabbitmq-cont
+    image: rabbitmq:management
+    hostname: rabbitmqhost
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - message
+
+  webapi:
+    container_name: webapi-cont
+    build: ./src/Webapi/
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 15000:80
+    depends_on:
+      - postgresqldb
+      - rabbitmq
+    restart: on-failure
+    networks:
+      - dbcon
+      - message
+  
+  watermark:
+    container_name: watermark-cont
+    build: ./src/WatermarkService
+    depends_on:
+      - postgresqldb
+      - rabbitmq
+    restart: on-failure
+    networks:
+      - dbcon
+      - message
+
+  report:
+    container_name: report-cont
+    build: ./src/ReportService
+    depends_on:
+      - postgresqldb
+      - rabbitmq
+    restart: on-failure
+    networks:
+      - dbcon
+      - message
+
+networks:
+  dbcon:
+    driver: bridge
+  message:
+    driver: bridge
