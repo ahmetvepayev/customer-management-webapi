@@ -34,6 +34,9 @@ public static class DependencyInjections
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IMessagePhotoWatermarkService, MessagePhotoWatermarkService>();
         services.AddScoped<IMessageReportService, MessageReportService>();
+        services.AddScoped<IReportsListService, ReportsListService>();
+        services.AddScoped<IReportRepository, ReportRepository>();
+        services.AddScoped<IReportFileRepository, ReportFileRepository>();
 
         return services;
     }
