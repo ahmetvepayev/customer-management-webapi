@@ -116,10 +116,20 @@ public class CreateReportService : ICreateReportService
         table.Columns.Add("Email", typeof(string));
         table.Columns.Add("Phone", typeof(string));
         table.Columns.Add("City", typeof(string));
-        table.Columns.Add("Number of Transactions", typeof(int));
+        table.Columns.Add("Total number of Transactions", typeof(int));
+        table.Columns.Add("Total amount of Transactions", typeof(decimal));
 
         customers.ForEach(c => {
-            table.Rows.Add(c.Id, c.Firstname, c.LastName, c.Email, c.Phone, c.City, c.CommercialTransactions.Count());
+            table.Rows.Add(
+                c.Id,
+                c.Firstname,
+                c.LastName,
+                c.Email,
+                c.Phone,
+                c.City,
+                c.CommercialTransactions.Count(),
+                c.CommercialTransactions.Select(ct => ct.Amount).Sum()
+            );
         });
 
         return table;
