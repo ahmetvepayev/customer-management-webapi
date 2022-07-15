@@ -31,6 +31,7 @@ public static class DependencyInjections
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IMessagePhotoWatermarkService, MessagePhotoWatermarkService>();
+        services.AddScoped<IMessageReportService, MessageReportService>();
 
         return services;
     }
@@ -66,6 +67,7 @@ public static class DependencyInjections
         });
 
         services.AddSingleton<RabbitMqClientWatermarkService>();
+        services.AddSingleton<RabbitMqClientReportService>();
         
         return services;
     }

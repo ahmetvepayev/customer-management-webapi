@@ -18,9 +18,9 @@ public class MessageWatermarkService : IMessageWatermarkService
     {
         _rabbitMqClientWatermarkService = rabbitMqClientWatermarkService;
         _imageService = imageService;
+        _logger = logger;
 
         _channel = _rabbitMqClientWatermarkService.Connect();
-        _logger = logger;
     }
 
     public void StartListen()

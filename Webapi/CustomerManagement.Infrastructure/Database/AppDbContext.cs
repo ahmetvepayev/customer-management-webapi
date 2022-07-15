@@ -10,6 +10,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 {
     public DbSet<Customer> Customers { get; set; }
     public DbSet<CommercialTransaction> CommercialTransactions { get; set; }
+    public DbSet<Report> Reports { get; set; }
+    public DbSet<ReportFile> ReportFiles { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -32,5 +34,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
             .HasMaxLength(CommercialTransactionRules.DescriptionMaxLength);
         modelBuilder.Entity<CommercialTransaction>().Property(e => e.Amount)
             .HasPrecision(CommercialTransactionRules.AmountMaxLength, CommercialTransactionRules.AmountPrecision);
+
+        modelBuilder.Entity<ReportFile>().HasOne(rf => rf.Report).WithOne(r => r.ReportFile).HasForeignKey<ReportFile>(rf => rf.Id);
     }
 }
