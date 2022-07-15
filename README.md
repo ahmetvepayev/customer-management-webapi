@@ -14,6 +14,7 @@ Customer management standalone Web API application. Application is divided into 
 
 ![architecture](https://i.imgur.com/GlzD3hP.png)
 
++ The individual services were designed as close to the Clean Architecture conventions as possible
 + Client performs all the actions via communication with the web API
 + The web API communicates with the PostgreSQL server for all data related operations
 + The web API doesn't directly communicate with the other services, and instead sends messages to RabbitMQ. The related service then recieves the message and performs its own operations completely separate of the API. The services then communicate with the database for data storage related operations
@@ -37,7 +38,7 @@ You need to install [Docker Engine](https://docs.docker.com/engine/install/) and
 
 Couple of remarks about the API :
 
-+ Customer photos are accepted as base64 strings converted from the binaries
++ Customer photos are accepted and returned as base64 strings converted from the binaries
 
 # Libraries & Technologies
 
