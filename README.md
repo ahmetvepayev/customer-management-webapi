@@ -25,6 +25,7 @@ Customer management standalone Web API application. Application is divided into 
 
 + The users and roles are implemented by Identity Framework and the default tables of the framework are present in the application. The only difference is the refresh token and its expiration that is stored in the users table
 
+
 # Using The App
 
 You need to install [Docker Engine](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/). Check the required steps for installation specific to your platform. You also need the Docker Engine running before you proceed with the following steps.
@@ -32,7 +33,20 @@ You need to install [Docker Engine](https://docs.docker.com/engine/install/) and
 + Clone the repository or download the source code.
 + Open a terminal window from the folder containing the ```docker-compose.yml``` file or navigate to that folder on your terminal.
 + Execute ```docker-compose up -d``` to start the application. Docker will automatically download all the necessary files required for the application and will set up separate container for PostgreSQL server and RabbitMQ. You can connect to ```http://localhost:15000/swagger``` from a web browser to see the API documentation.
++ Visit ```http://localhost:15672``` for RabbitMQ Management if you want to manage the message traffic. Credentials are the default for RabbitMQ :
+
+    | Username | Password |
+    |----------|----------|
+    | guest    | guest    |
+
 + The message queues in RabbitMQ will not be created until the API sends a message to the queue for the first time. Until then the other services will not be able to listen to those queues and the containers for those services will keep restarting until they can establish a connection.
++ The web API seeds the database with sample data when it starts. You can use the following user credentials or register your own users and use a user with an admin role to give the added users any roles:
+
+    | Username     | Password      | Roles         |
+    |--------------|---------------|---------------|
+    | adminuser    | adminPass123* | admin, editor |
+    | ahmetvepayev | ahmetPass123* | editor        |
+
 + When you're done with the application, execute ```docker-compose down --rmi all --volumes``` to shut down the containers and remove all files associated with the application.
 
 # API
@@ -43,7 +57,7 @@ Couple of remarks about the API :
 
 # Libraries & Technologies
 
-+ The services target ASP.NET Core 6
++ The services target .NET 6
 
 + Entity Framework Core is used for ORM & database querying
 + NpgSql for EfCore
