@@ -57,6 +57,8 @@ public class MessageReportService : IMessageReportService
                     break;
                 }
             }
+
+            _channel.BasicAck(args.DeliveryTag, false);
         }
         catch(Exception ex)
         {

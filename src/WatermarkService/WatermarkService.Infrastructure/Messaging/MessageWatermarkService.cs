@@ -45,6 +45,8 @@ public class MessageWatermarkService : IMessageWatermarkService
             _imageService.AddWatermarkToPhoto(id);
 
             _logger.LogInformation($"Added watermark to image for Id: {id}");
+
+            _channel.BasicAck(args.DeliveryTag, false);
         }
         catch(Exception ex)
         {
