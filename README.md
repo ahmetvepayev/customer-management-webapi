@@ -62,6 +62,7 @@ Couple of remarks about the API :
 + Entity Framework Core is used for ORM & database querying
 + NpgSql for EfCore
 + Automapper for entity-dto mapping
++ Microsoft Identity Framework for handling users and roles
 + ImageSharp for image processing in the watermark service
 + Quartz.NET for scheduling of the message firing from the API for the weekly and monthly Excel reports
 + ClosedXML for creating Excel tables
