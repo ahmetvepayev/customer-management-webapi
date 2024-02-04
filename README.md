@@ -1,6 +1,6 @@
 # Customer Management
 
-Customer management standalone Web API application. Application is divided into several services that each reside in a separate Docker container. Client communicates with the Web API via HTTP requests
+Customer management Web API application. Application is divided into several services that each reside in a separate Docker container. Client communicates with the Web API via HTTP requests
 
 ## Main features :
 
