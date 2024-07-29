@@ -12,12 +12,12 @@ Customer management Web API application. Application is divided into several ser
 
 # Architecture
 
-![architecture](https://i.imgur.com/GlzD3hP.png)
+![architecture](https://i.imgur.com/yuRWP11.png)
 
 + The individual services were designed as close to the Clean Architecture conventions as possible
 + Client performs all the actions via communication with the web API
 + The web API communicates with the PostgreSQL server for all data related operations
-+ The web API doesn't directly communicate with the other services, and instead sends messages to RabbitMQ. The related service then recieves the message and performs its own operations completely separate of the API. The services then communicate with the database for data storage related operations
++ The web API doesn't directly communicate with the other services, and instead sends messages to RabbitMQ. The related service then receives the message and performs its own operations completely separate of the API. The services then communicate with the database for data storage related operations
 
 # Data Model
 
